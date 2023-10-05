@@ -1,4 +1,4 @@
-package com.abdulmo123.connectwave.model;
+package com.abdulmo123.connectwave.entity;
 
 import jakarta.persistence.*;
 
