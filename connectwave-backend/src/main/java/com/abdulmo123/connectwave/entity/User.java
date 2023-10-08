@@ -1,8 +1,10 @@
 package com.abdulmo123.connectwave.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name="user")
@@ -12,30 +14,39 @@ public class User implements Serializable {
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
     @Transient
     private String password;
 
-    @Column(name = "f_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "l_name")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "bio")
     private String bio;
 
+    @CreatedDate
+    @Column(name="created_date", nullable=false, updatable=false)
+    private Date createdDate;
+
+    @Column(name="last_login_date")
+    private Date lastLoginDate;
+
     public User() { }
 
-    public User(String email, String password, String firstName, String lastName, String bio) {
+    public User(String email, String password, String firstName, String lastName, String bio, Date createdDate, Date lastLoginDate) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
+        this.createdDate = createdDate;
+        this.lastLoginDate = lastLoginDate;
     }
 
     public Long getId() {
@@ -85,4 +96,21 @@ public class User implements Serializable {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
 }
