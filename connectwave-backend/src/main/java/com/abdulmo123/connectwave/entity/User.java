@@ -37,9 +37,19 @@ public class User implements Serializable {
     @Column(name="last_login_date")
     private Date lastLoginDate;
 
+    @Column(name="user_role")
+    @Enumerated(EnumType.STRING)
+    private AppUserRole appUserRole;
+
+    @Column(name="locked_flg")
+    private boolean locked;
+
+    @Column(name="enabled_flg")
+    private boolean enabled;
+
     public User() { }
 
-    public User(String email, String password, String firstName, String lastName, String bio, Date createdDate, Date lastLoginDate) {
+    public User(String email, String password, String firstName, String lastName, String bio, Date createdDate, Date lastLoginDate, AppUserRole appUserRole, boolean locked, boolean enabled) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -47,6 +57,9 @@ public class User implements Serializable {
         this.bio = bio;
         this.createdDate = createdDate;
         this.lastLoginDate = lastLoginDate;
+        this.appUserRole = appUserRole;
+        this.locked = locked;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -111,6 +124,30 @@ public class User implements Serializable {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public AppUserRole getAppUserRole() {
+        return appUserRole;
+    }
+
+    public void setAppUserRole(AppUserRole appUserRole) {
+        this.appUserRole = appUserRole;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
 }
