@@ -27,7 +27,7 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "bio")
+    @Column(name = "user_bio")
     private String bio;
 
     @CreatedDate
