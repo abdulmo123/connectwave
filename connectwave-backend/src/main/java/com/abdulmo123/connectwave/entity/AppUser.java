@@ -1,7 +1,5 @@
 package com.abdulmo123.connectwave.entity;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +12,9 @@ public class AppUser implements UserDetails {
 
     public AppUser (User user, AppUserRole appUserRole) {
         this.user = user;
+    }
+
+    public AppUser(String firstName, String lastName, String email, String password, AppUserRole user) {
     }
 
     @Override

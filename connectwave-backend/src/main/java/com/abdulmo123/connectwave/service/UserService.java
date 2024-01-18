@@ -1,6 +1,8 @@
 package com.abdulmo123.connectwave.service;
 
 
+import com.abdulmo123.connectwave.entity.AppUser;
+import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,5 +25,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 String.format(USER_NOT_FOUND_MSG, email)));
+    }
+
+    public String signUpUser(AppUser appUser) {
+        return "";
     }
 }
