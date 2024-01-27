@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
@@ -17,15 +18,20 @@ public class User implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    @Transient
+    @Column(name = "password")
+//    @Transient
     private String password;
 
+    @NotEmpty(message = "Please enter first name")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotEmpty(message = "Please enter last name")
     @Column(name = "last_name")
     private String lastName;
+
+    @Column(name="gender")
+    private String gender;
 
     @Column(name = "user_bio")
     private String bio;
@@ -37,29 +43,17 @@ public class User implements Serializable {
     @Column(name="last_login_date")
     private Date lastLoginDate;
 
-    @Column(name="user_role")
-    @Enumerated(EnumType.STRING)
-    private AppUserRole appUserRole;
-
-    @Column(name="locked_flg")
-    private boolean locked;
-
-    @Column(name="enabled_flg")
-    private boolean enabled;
-
     public User() { }
 
-    public User(String email, String password, String firstName, String lastName, String bio, Date createdDate, Date lastLoginDate, AppUserRole appUserRole, boolean locked, boolean enabled) {
+    public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.bio = bio;
         this.createdDate = createdDate;
         this.lastLoginDate = lastLoginDate;
-        this.appUserRole = appUserRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -102,6 +96,10 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getGender() { return gender; }
+
+    public void setGender(String gender) { this.gender = gender; }
+
     public String getBio() {
         return bio;
     }
@@ -126,28 +124,19 @@ public class User implements Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public AppUserRole getAppUserRole() {
-        return appUserRole;
-    }
-
-    public void setAppUserRole(AppUserRole appUserRole) {
-        this.appUserRole = appUserRole;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", first name='" + firstName + '\'' +
+                ", last name='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", bio='" + bio + '\'' +
+                ", created date='" + createdDate + '\'' +
+                ", last login date='" + lastLoginDate +
+                '}';
     }
 
 }

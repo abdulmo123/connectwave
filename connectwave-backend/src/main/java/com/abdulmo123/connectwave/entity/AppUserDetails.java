@@ -1,32 +1,40 @@
 package com.abdulmo123.connectwave.entity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 
-public class AppUser implements UserDetails {
+public class AppUserDetails implements UserDetails {
+
+    private static final long serialVersionUID = 1L;
     private User user;
 
-    public AppUser (User user, AppUserRole appUserRole) {
+    public AppUserDetails(User user) {
         this.user = user;
-    }
-
-    public AppUser(String firstName, String lastName, String email, String password, AppUserRole user) {
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(user.getAppUserRole().name());
-        return Collections.singletonList(authority);
+        return new HashSet<GrantedAuthority>();
     }
 
     @Override
     public String getPassword() {
         return user.getPassword();
+    }
+
+    public Long getId() {
+        return user.getId();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -41,7 +49,7 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.isLocked();
+        return true;
     }
 
     @Override
@@ -51,6 +59,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+        return true;
     }
 }
