@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Transient;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -19,7 +20,7 @@ public class User implements Serializable {
     private String email;
 
     @Column(name = "password")
-//    @Transient
+    @Transient
     private String password;
 
     @NotEmpty(message = "Please enter first name")
@@ -138,5 +139,4 @@ public class User implements Serializable {
                 ", last login date='" + lastLoginDate +
                 '}';
     }
-
 }

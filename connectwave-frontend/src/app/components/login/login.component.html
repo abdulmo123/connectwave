@@ -16,13 +16,14 @@
                 <form>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1">
+                    <input type="text" name="email" [(ngModel)]="user.email" class="form-control" placeholder="Email">
                   </div>
                   <div class="form-group mb-5">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" name="password" [(ngModel)]="user.password" class="form-control"
+                      placeholder="Password">
                   </div>
-                  <button type="submit" class="btn btn-theme" style="float: right;">Login</button>
+                  <button (click)="onLogin()" type="submit" class="btn btn-theme" style="float: right;">Login</button>
                   <a href="#l" class="forgot-link float-right text-primary">Forgot password?</a>
                 </form>
               </div>

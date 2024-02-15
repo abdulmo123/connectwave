@@ -7,7 +7,4 @@ export class User {
   bio: string | undefined;
   createdDate : Date | undefined;
   lastLoginDate : Date | undefined;
-  // role : string | undefined;
-  // locked : boolean | undefined;
-  // enabled : boolean | undefined;
 }

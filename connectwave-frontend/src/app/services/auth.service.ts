@@ -13,11 +13,10 @@ export class AuthService {
 
   login(user: User) {
     const headers = new HttpHeaders({
-      Authorization: 'Basic' +
+      Authorization: 'Basic ' +
       btoa(user.email + ':' + user.password)
     });
-
-    return this.http.get(`${environment.hostUrl}/api/v1/login`, { headers, responseType: 'text' as 'json'});
+    return this.http.get(`${environment.hostUrl}/login`, { headers, responseType: 'text' as 'json' } )
   }
 
   signup(user: User) {
