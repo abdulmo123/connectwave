@@ -9,6 +9,16 @@ import { User } from '../models/user';
 })
 export class AuthService {
 
+  private user: any;
+
+  setCurrentUser(user: User) {
+    this.user = user;
+  }
+
+  getCurrentUser(): any {
+    return this.user;
+  }
+
   constructor(private http: HttpClient) { }
 
   login(user: User) {
@@ -16,7 +26,7 @@ export class AuthService {
       Authorization: 'Basic ' +
       btoa(user.email + ':' + user.password)
     });
-    return this.http.get(`${environment.hostUrl}/login`, { headers, responseType: 'text' as 'json' } )
+    return this.http.get(`${environment.hostUrl}/login`, { headers } )
   }
 
   signup(user: User) {

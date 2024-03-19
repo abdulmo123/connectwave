@@ -1,12 +1,18 @@
 package com.abdulmo123.connectwave.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Transient;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="user")
@@ -41,12 +47,17 @@ public class User implements Serializable {
     @Column(name="created_date", nullable=false, updatable=false)
     private Date createdDate;
 
+    @LastModifiedDate
     @Column(name="last_login_date")
     private Date lastLoginDate;
 
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Blog> userBlogPosts = new ArrayList<>();
+
     public User() { }
 
-    public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate) {
+    public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Blog> userBlogPosts) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -55,6 +66,7 @@ public class User implements Serializable {
         this.bio = bio;
         this.createdDate = createdDate;
         this.lastLoginDate = lastLoginDate;
+        this.userBlogPosts = userBlogPosts;
     }
 
     public Long getId() {
@@ -125,18 +137,27 @@ public class User implements Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
+    public List<Blog> getUserBlogPosts() {
+        return userBlogPosts;
+    }
+
+    public void setUserBlogPosts(List<Blog> userBlogPosts) {
+        this.userBlogPosts = userBlogPosts;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", first name='" + firstName + '\'' +
-                ", last name='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", bio='" + bio + '\'' +
-                ", created date='" + createdDate + '\'' +
-                ", last login date='" + lastLoginDate +
+                ", createdDate=" + createdDate +
+                ", lastLoginDate=" + lastLoginDate +
+                ", userBlogPosts=" + userBlogPosts +
                 '}';
     }
 }

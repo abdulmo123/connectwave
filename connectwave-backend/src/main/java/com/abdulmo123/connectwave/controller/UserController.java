@@ -22,9 +22,4 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-/*    @PostMapping("/signup")
-    public ResponseEntity<User> signupUser(@RequestBody User user) {
-        User newUser = userService.saveUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }*/
 }
