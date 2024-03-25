@@ -1,10 +1,13 @@
-export class User {
-  id: number | undefined;
-  email: string | undefined;
-  password: string | undefined;
-  firstName : string | undefined;
-  lastName: string | undefined;
-  bio: string | undefined;
-  createdDate : Date | undefined;
-  lastLoginDate : Date | undefined;
+import { Blog } from "./blog";
+
+export interface User {
+  id: number,
+  email: string,
+  password: string,
+  firstName : string,
+  lastName: string,
+  bio: string,
+  createdDate? : Date,
+  lastLoginDate? : Date,
+  userBlogPosts?: Blog[],
 }

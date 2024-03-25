@@ -22,7 +22,8 @@ export class SignupComponent {
     lastName: '',
     bio: '',
     createdDate: undefined,
-    lastLoginDate: undefined
+    lastLoginDate: undefined,
+    userBlogPosts: undefined
   };
 
   signupFormSubmitted = false;
