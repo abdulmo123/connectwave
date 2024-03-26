@@ -1,9 +1,9 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.Blog;
+import com.abdulmo123.connectwave.entity.Post;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
-import com.abdulmo123.connectwave.repository.BlogRepository;
+import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,41 +13,41 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BlogService {
+public class PostService {
 
     @Autowired
-    private final BlogRepository blogRepository;
+    private final PostRepository postRepository;
 
     @Autowired
     private final UserRepository userRepository;
 
-    public BlogService(BlogRepository blogRepository, UserRepository userRepository) {
-        this.blogRepository = blogRepository;
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
 
-    public Blog createUserBlogPost(Long userId, Blog blog) {
+    public Post createUserPost(Long userId, Post post) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            String content = blog.getContent();
-            blog.setContent(content);
-            blog.setCreatedDate(new Date());
-            blog.setUser(user);
+            String content = post.getContent();
+            post.setContent(content);
+            post.setCreatedDate(new Date());
+            post.setUser(user);
 
             String publisherName = user.getFirstName() + " " + user.getLastName();
-            blog.setPublisherName(publisherName);
+            post.setPublisherName(publisherName);
 
-            user.getUserBlogPosts().add(blog);
+            user.getUserPosts().add(post);
 
-            return blogRepository.save(blog);
+            return postRepository.save(post);
         }
         else {
             throw new UserNotFoundException("User with id: " + userId + " not found!");
         }
     }
 
-    public List<Blog> getAllBlogPosts() {
-        return blogRepository.getAllBlogPosts();
+    public List<Post> getAllPosts() {
+        return postRepository.getAllPosts();
     }
 }

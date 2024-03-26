@@ -1,7 +1,5 @@
 package com.abdulmo123.connectwave.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -53,11 +51,11 @@ public class User implements Serializable {
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Blog> userBlogPosts = new ArrayList<>();
+    private List<Post> userPosts = new ArrayList<>();
 
     public User() { }
 
-    public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Blog> userBlogPosts) {
+    public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -66,7 +64,7 @@ public class User implements Serializable {
         this.bio = bio;
         this.createdDate = createdDate;
         this.lastLoginDate = lastLoginDate;
-        this.userBlogPosts = userBlogPosts;
+        this.userPosts = userPosts;
     }
 
     public Long getId() {
@@ -137,12 +135,12 @@ public class User implements Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public List<Blog> getUserBlogPosts() {
-        return userBlogPosts;
+    public List<Post> getUserPosts() {
+        return userPosts;
     }
 
-    public void setUserBlogPosts(List<Blog> userBlogPosts) {
-        this.userBlogPosts = userBlogPosts;
+    public void setUserPosts(List<Post> userPosts) {
+        this.userPosts = userPosts;
     }
 
     @Override
@@ -157,7 +155,7 @@ public class User implements Serializable {
                 ", bio='" + bio + '\'' +
                 ", createdDate=" + createdDate +
                 ", lastLoginDate=" + lastLoginDate +
-                ", userBlogPosts=" + userBlogPosts +
+                ", userPosts=" + userPosts +
                 '}';
     }
 }

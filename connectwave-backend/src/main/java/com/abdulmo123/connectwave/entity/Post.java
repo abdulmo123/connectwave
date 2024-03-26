@@ -1,7 +1,6 @@
 package com.abdulmo123.connectwave.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -9,8 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="blog")
-public class Blog implements Serializable {
+@Table(name="post")
+public class Post implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,9 +32,9 @@ public class Blog implements Serializable {
     @Transient
     private String publisherName;
 
-    public Blog() {}
+    public Post() {}
 
-    public Blog (String content, Date createdDate, User user, String publisherName) {
+    public Post(String content, Date createdDate, User user, String publisherName) {
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
@@ -84,7 +83,7 @@ public class Blog implements Serializable {
 
     @Override
     public String toString() {
-        return "Blog{" +
+        return "Post{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", createdDate=" + createdDate +
