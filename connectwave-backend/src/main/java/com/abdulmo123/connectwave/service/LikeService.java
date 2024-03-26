@@ -31,7 +31,7 @@ public class LikeService {
         return postRepository.getPostsLikedByUser(userId);
     }
 
-    public void postLikeUnlike(Long userId, Long postId, String isLiked) {
+    public Post saveLikeStatus(Long userId, Long postId, String isLiked) {
 //        likeRepository.unlikePost(userId, postId);
         // TODO: if post is liked, add it to the like table
 
@@ -42,10 +42,10 @@ public class LikeService {
             postRepository.unlikePost(userId, postId);
         }
         else {
-            ;
+            return null;
             // TODO: exception handling
 //            return new LikeNotFoundException("User with id: " + userId + " not found OR Post with id: " + postId + " not found!");
         }
-        // TODO: if post is unliked, delete it from the like table
+        return null;
     }
 }

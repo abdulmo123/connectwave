@@ -1,6 +1,5 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.entity.Like;
 import com.abdulmo123.connectwave.entity.Post;
 import com.abdulmo123.connectwave.service.LikeService;
 import com.abdulmo123.connectwave.service.PostService;
@@ -27,10 +26,10 @@ public class LikeController {
         return new ResponseEntity<>(allLikesByUser, HttpStatus.OK);
     }
 
-    @PostMapping("/unlikePost/{userId}/{postId}/{isLiked}")
-    public void unlikePost(@PathVariable ("userId") Long userId, @PathVariable("postId") Long postId, @PathVariable("isLiked") String isLiked) {
-//        Post post = likeService.postLikeUnlike(userId, postId, isLiked);
-//        return new ResponseEntity<>(post, HttpStatus.OK);
-        likeService.postLikeUnlike(userId, postId, isLiked);
+    @PostMapping("/saveLikeStatus/{userId}/{postId}/{isLiked}")
+    public ResponseEntity<Post> saveLikeStatus(@PathVariable ("userId") Long userId, @PathVariable("postId") Long postId, @PathVariable("isLiked") String isLiked) {
+        Post post = likeService.saveLikeStatus(userId, postId, isLiked);
+        return new ResponseEntity<>(post, HttpStatus.OK);
+//        likeService.postLikeUnlike(userId, postId, isLiked);
     }
 }
