@@ -27,9 +27,14 @@ public class LikeController {
     }
 
     @PostMapping("/saveLikeStatus/{userId}/{postId}/{isLiked}")
-    public ResponseEntity<Post> saveLikeStatus(@PathVariable ("userId") Long userId, @PathVariable("postId") Long postId, @PathVariable("isLiked") String isLiked) {
-        Post post = likeService.saveLikeStatus(userId, postId, isLiked);
-        return new ResponseEntity<>(post, HttpStatus.OK);
-//        likeService.postLikeUnlike(userId, postId, isLiked);
+    public ResponseEntity<Post> saveLikeStatus(@PathVariable ("userId") Long userId, @PathVariable("postId") Long postId, @PathVariable("isLiked") String isLiked) throws Exception {
+        try {
+            Post post = likeService.saveLikeStatus(userId, postId, isLiked);
+            return new ResponseEntity<>(post, HttpStatus.OK);
+        }
+
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

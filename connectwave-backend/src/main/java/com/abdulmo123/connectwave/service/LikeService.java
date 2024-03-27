@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.entity.Post;
+import com.abdulmo123.connectwave.exception.LikeNotFoundException;
 import com.abdulmo123.connectwave.repository.LikeRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
@@ -31,20 +32,18 @@ public class LikeService {
         return postRepository.getPostsLikedByUser(userId);
     }
 
-    public Post saveLikeStatus(Long userId, Long postId, String isLiked) {
-//        likeRepository.unlikePost(userId, postId);
-        // TODO: if post is liked, add it to the like table
+    public Post saveLikeStatus(Long userId, Long postId, String isLiked) throws Exception {
 
-        if (isLiked.equals("Y")) {
-            postRepository.likePost(userId, postId);
+        try {
+            if (isLiked.equals("Y")) {
+                postRepository.likePost(userId, postId);
+            }
+            else if (isLiked.equals("N")){
+                postRepository.unlikePost(userId, postId);
+            }
         }
-        else if (isLiked.equals("N")){
-            postRepository.unlikePost(userId, postId);
-        }
-        else {
-            return null;
-            // TODO: exception handling
-//            return new LikeNotFoundException("User with id: " + userId + " not found OR Post with id: " + postId + " not found!");
+        catch (Exception e) {
+            throw new IllegalArgumentException("Invalid value for isLiked: " + isLiked);
         }
         return null;
     }
