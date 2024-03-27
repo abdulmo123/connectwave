@@ -15,14 +15,18 @@ import org.springframework.data.annotation.Transient;
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(nullable = false, updatable = false)
   private Long id;
 
-  @Column(name = "email", nullable = false, unique = true) private String email;
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
 
-  @Column(name = "password") @Transient private String password;
+  @Column(name = "password")
+  @Transient
+  private String password;
 
   @NotEmpty(message = "Please enter first name")
   @Column(name = "first_name")
@@ -32,29 +36,27 @@ public class User implements Serializable {
   @Column(name = "last_name")
   private String lastName;
 
-  @Column(name = "gender") private String gender;
+  @Column(name = "gender")
+  private String gender;
 
-  @Column(name = "user_bio") private String bio;
+  @Column(name = "user_bio")
+  private String bio;
 
   @CreatedDate
   @Column(name = "created_date", nullable = false, updatable = false)
   private Date createdDate;
 
   @LastModifiedDate
-  @LastModifiedDate
   @Column(name = "last_login_date")
   private Date lastLoginDate;
 
   @JsonManagedReference
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",
-             cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
   private List<Post> userPosts = new ArrayList<>();
 
   public User() {}
 
-  public User(String email, String password, String firstName, String lastName,
-              String gender, String bio, Date createdDate, Date lastLoginDate,
-              List<Post> userPosts) {
+  public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
@@ -112,12 +114,17 @@ public class User implements Serializable {
 
   @Override
   public String toString() {
-    return "User{"
-        + "id=" + id + ", email='" + email + '\'' + ", password='" + password +
-        '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName +
-        '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName +
-        '\'' + ", gender='" + gender + '\'' + ", bio='" + bio + '\'' +
-        ", createdDate=" + createdDate + ", lastLoginDate=" + lastLoginDate +
-        ", userPosts=" + userPosts + '}';
+    return "User{" +
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", gender='" + gender + '\'' +
+            ", bio='" + bio + '\'' +
+            ", createdDate=" + createdDate +
+            ", lastLoginDate=" + lastLoginDate +
+            ", userPosts=" + userPosts +
+            '}';
   }
 }

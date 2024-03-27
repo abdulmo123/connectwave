@@ -6,10 +6,9 @@ import org.springframework.data.annotation.CreatedDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "likes", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "post_id" })
-})
+@Table(name = "likes", uniqueConstraints = {@UniqueConstraint(columnNames = { "user_id", "post_id" })})
 public class Like {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
