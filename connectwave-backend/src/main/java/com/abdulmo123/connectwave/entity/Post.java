@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="post")
@@ -27,6 +29,9 @@ public class Post implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> postLikes = new ArrayList<>();
 
     @Transient
     private String publisherName;
@@ -86,6 +91,7 @@ public class Post implements Serializable {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", createdDate=" + createdDate +
+                ", postLikes=" + postLikes +
                 ", publisherName='" + publisherName + '\'' +
                 '}';
     }
