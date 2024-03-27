@@ -24,7 +24,8 @@ public class User implements Serializable {
   @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  @Column(name = "password") @Transient
+  @Column(name = "password")
+  @Transient
   private String password;
 
   @NotEmpty(message = "Please enter first name")
