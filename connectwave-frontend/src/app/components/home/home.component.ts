@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
-import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
@@ -25,12 +24,10 @@ export class HomeComponent implements OnInit {
     console.log('ALL posts', this.allPosts);
   }
 
-  // currentUserId: number | undefined;
   user: any;
   post: Post | undefined;
   allPosts: Post[] = [];
   likedPosts: Post[] = [];
-  // isLiked: boolean = false;
 
   public getAllPosts() {
     this.postService.getAllPosts().subscribe(
@@ -62,8 +59,6 @@ export class HomeComponent implements OnInit {
 
   public onCreateUserPost(createPostForm: NgForm) {
     console.log('Form data:', createPostForm.value);
-    // const getUserId = localStorage.getItem('userId');
-    // this.currentUserId = +getUserId!;
     this.postService.createUserPost(this.user.id, createPostForm.value).subscribe(
       (response: Post) => {
         this.post = response;
@@ -93,7 +88,6 @@ export class HomeComponent implements OnInit {
         console.log('postId', post.id);
         post.isLiked = isLiked;
         console.log('is post liked?', post.isLiked);
-        // post.isLikedChk = !post.isLikedChk;
         console.log('is this liked? ', post.isLikedChk);
       },
 

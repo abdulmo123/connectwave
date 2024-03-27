@@ -23,7 +23,6 @@ public class Post implements Serializable {
     @Column(name="created_date", nullable=false, updatable=false)
     private Date createdDate;
 
-//    @JsonIgnore
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")

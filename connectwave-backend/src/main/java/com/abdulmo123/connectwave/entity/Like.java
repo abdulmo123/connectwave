@@ -70,13 +70,4 @@ public class Like {
         this.post = post;
     }
 
-    /*@Override
-    public String toString() {
-        return "Like{" +
-                "id=" + id +
-                ", createdDate=" + createdDate +
-                ", user=" + user +
-                ", post=" + post +
-                '}';
-    }*/
 }

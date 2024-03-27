@@ -1,7 +1,6 @@
 package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.entity.Post;
-import com.abdulmo123.connectwave.exception.LikeNotFoundException;
 import com.abdulmo123.connectwave.repository.LikeRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
