@@ -19,6 +19,10 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
+    const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
+    this.allPosts.forEach(post => {
+      post.isLikedChk = likedPosts.includes(post.id);
+  });
     this.getAllPosts();
     this.getAllLikesByUser();
     console.log('ALL posts', this.allPosts);
@@ -66,6 +70,7 @@ export class HomeComponent implements OnInit {
         this.allPosts.push(this.post);
         console.log('All posts:', this.allPosts);
         this.getAllPosts();
+        this.getAllLikesByUser();
         createPostForm.reset();
       },
       (error: HttpErrorResponse) => {
@@ -106,6 +111,7 @@ export class HomeComponent implements OnInit {
 
   handleLogout() {
     localStorage.removeItem('currentUser')
+    localStorage.removeItem('likedPosts');
     this.router.navigate(['/login']);
   }
 
@@ -121,6 +127,8 @@ export class HomeComponent implements OnInit {
             post.isLiked = 'Y';
           }
         });
+
+        localStorage.setItem('likedPosts', JSON.stringify(this.likedPosts));
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
