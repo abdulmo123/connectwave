@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -15,18 +16,20 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
+  constructor(private cdr: ChangeDetectorRef, private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
   ngOnInit(): void {
-    this.getAllPosts();
-    console.log('ALL posts', this.allPosts);
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
+    this.getAllPosts();
+    this.getAllLikesByUser();
+    console.log('ALL posts', this.allPosts);
   }
 
   // currentUserId: number | undefined;
   user: any;
   post: Post | undefined;
   allPosts: Post[] = [];
+  likedPosts: Post[] = [];
   // isLiked: boolean = false;
 
   public getAllPosts() {
@@ -110,5 +113,24 @@ export class HomeComponent implements OnInit {
   handleLogout() {
     localStorage.removeItem('currentUser')
     this.router.navigate(['/login']);
+  }
+
+  public getAllLikesByUser() {
+    this.likeService.getAllLikesByUser(this.user.id!).subscribe(
+      (response: Post[])  => {
+        this.likedPosts = response;
+        console.log('here are my liked posts =>', this.likedPosts)
+        this.allPosts.forEach(post => {
+          const likedPost = this.likedPosts.find(lp => lp.id === post.id)
+          if (likedPost) {
+            post.isLikedChk = true;
+            post.isLiked = 'Y';
+          }
+        });
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.message);
+      }
+    )
   }
 }

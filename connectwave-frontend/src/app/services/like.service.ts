@@ -12,12 +12,10 @@ export class LikeService {
   constructor(private http: HttpClient) { }
 
   public saveLikeStatus(userId: number, postId: number, isLiked: string): Observable<Post> {
-    // const reqBody = {
-    //   userId: userId,
-    //   postId: postId,
-    //   isLiked: isLiked
-    // };
-
     return this.http.post<Post>(`${environment.hostUrl}/api/v1/likes/saveLikeStatus/${userId}/${postId}/${isLiked}`, {});
+  }
+
+  public getAllLikesByUser(userId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${environment.hostUrl}/api/v1/likes/getAllLikesByUser/${userId}`);
   }
 }
