@@ -11,12 +11,13 @@ export class AuthService {
 
   private user: any;
 
-  setCurrentUser(user: User) {
-    this.user = user;
+  setCurrentUser(user: User): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
-  getCurrentUser(): any {
-    return this.user;
+  getCurrentUser(): User | null {
+    const storedUser = localStorage.getItem('currentUser');
+    return storedUser ? JSON.parse(storedUser) : null;
   }
 
   constructor(private http: HttpClient) { }
@@ -26,6 +27,7 @@ export class AuthService {
       Authorization: 'Basic ' +
       btoa(user.email + ':' + user.password)
     });
+    return this.http.get(`${environment.hostUrl}/login`, { headers } )
     return this.http.get(`${environment.hostUrl}/login`, { headers } )
   }
 

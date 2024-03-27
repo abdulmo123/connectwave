@@ -1,4 +1,4 @@
-import { Blog } from "./blog";
+import { Post } from "./post";
 
 export interface User {
   id: number,
@@ -9,5 +9,5 @@ export interface User {
   bio: string,
   createdDate? : Date,
   lastLoginDate? : Date,
-  userBlogPosts?: Blog[],
+  userPosts?: Post[],
 }

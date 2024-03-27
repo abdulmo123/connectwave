@@ -7,7 +7,7 @@
     <form class="d-flex" role="search">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       <div type="button" class="btn btn-light">
-        <a><span class="glyphicon glyphicon-log-out"></span></a>
+        <a (click)="handleLogout()"><span class="glyphicon glyphicon-log-out"></span></a>
       </div>
     </form>
   </div>
@@ -20,7 +20,7 @@
   <div class="row">
     <div style="display: contents" class="col-md-offset-3 col-md-6 col-xs-12">
       <div class="well well-sm well-social-post">
-        <form #createBlogPostForm="ngForm" (ngSubmit)="onCreateUserBlogPost(createBlogPostForm)">
+        <form #createPostForm="ngForm" (ngSubmit)="onCreateUserPost(createPostForm)">
           <ul class="list-inline" id='list_PostActions'>
             <li class='active'><a href='#'>Update status</a></li>
             <li><a href='#'>Add photos/Video</a></li>
@@ -31,7 +31,7 @@
             <li><a href="#"><span class="glyphicon glyphicon-camera"></span></a></li>
             <li><a href="#" class='glyphicon glyphicon-user'></a></li>
             <li><a href="#" class='glyphicon glyphicon-map-marker'></a></li>
-            <li class='pull-right'><button [disabled]="createBlogPostForm.invalid"
+            <li class='pull-right'><button [disabled]="createPostForm.invalid"
                 class='btn btn-primary btn-xs'>Post</button></li>
           </ul>
         </form>
@@ -44,24 +44,28 @@
   <div class="row clearfix">
     <div class="container">
       <div class="col-lg-8 col-md-12 left-box">
-        <div *ngFor="let blogPost of allBlogPosts" class="card single_post">
+        <div *ngFor="let post of allPosts" class="card single_post">
           <div class="body">
             <div class="img-post">
               <img class="d-block img-fluid rounded-circle" src="https://www.bootdey.com/image/800x280/FFB6C1/000000"
                 alt="First slide">
             </div>
             <div class="publisher-info">
-              <h5><a>{{ this.blogPost.publisherName }}</a></h5>
+              <h5><a>{{ this.post.publisherName }}</a></h5>
             </div>
-            <p>{{ blogPost?.content }}</p>
+            <p>{{ post?.content }}</p>
           </div>
           <div class="footer">
             <div class="actions">
               <a href="javascript:void(0);" class="btn btn-outline-secondary">Continue Reading</a>
             </div>
             <ul class="stats">
-              <li class=""><a>{{blogPost.formattedDate}}</a></li>
-              <li><a href="javascript:void(0);" class="fa fa-heart"></a></li>
+              <li class=""><a>{{ post.formattedDate }}</a></li>
+              <li>
+                <a href="javascript:void(0);" class="fa fa-heart" [style.color]="post.isLikedChk ? 'red' : 'black'"
+                  (click)="toggleLike(post)">
+                </a>
+              </li>
               <li><a href="javascript:void(0);" class="fa fa-comment"></a></li>
             </ul>
           </div>

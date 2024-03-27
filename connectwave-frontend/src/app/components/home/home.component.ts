@@ -1,10 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Blog } from 'src/app/models/blog';
-import { User } from 'src/app/models/user';
+import { Router } from '@angular/router';
+import { Post } from 'src/app/models/post';
 import { AuthService } from 'src/app/services/auth.service';
-import { BlogService } from 'src/app/services/blog.service';
+import { LikeService } from 'src/app/services/like.service';
+import { PostService } from 'src/app/services/post.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -13,24 +15,25 @@ import { BlogService } from 'src/app/services/blog.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private blogService: BlogService, private auth: AuthService) {}
+  constructor(private cdr: ChangeDetectorRef, private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
   ngOnInit(): void {
-    this.getAllBlogPosts();
-    console.log('ALL blog posts', this.allBlogPosts);
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
+    this.getAllPosts();
+    this.getAllLikesByUser();
+    console.log('ALL posts', this.allPosts);
   }
 
-  currentUserId: number | undefined;
   user: any;
-  blogPost: Blog | undefined;
-  allBlogPosts: Blog[] = [];
+  post: Post | undefined;
+  allPosts: Post[] = [];
+  likedPosts: Post[] = [];
 
-  public getAllBlogPosts() {
-    this.blogService.getAllBlogPosts().subscribe(
-      (response: Blog[]) => {
-        response.forEach((blogPost: Blog) => {
-          blogPost.formattedDate = new Date(blogPost.createdDate!).toLocaleString('en-US', {
+  public getAllPosts() {
+    this.postService.getAllPosts().subscribe(
+      (response: Post[]) => {
+        response.forEach((post: Post) => {
+          post.formattedDate = new Date(post.createdDate!).toLocaleString('en-US', {
             weekday: 'short',
             year: 'numeric',
             month: 'short',
@@ -40,7 +43,7 @@ export class HomeComponent implements OnInit {
             hour12: true
           });
         });
-        this.allBlogPosts = response;
+        this.allPosts = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -54,26 +57,74 @@ export class HomeComponent implements OnInit {
     console.log(formattedDateTime);
   }
 
-  public onCreateUserBlogPost(createBlogPostForm: NgForm) {
-    console.log('Form data:', createBlogPostForm.value);
-    const getUserId = sessionStorage.getItem('userId');
-    this.currentUserId = +getUserId!;
-    this.blogService.createUserBlogPost(this.currentUserId!, createBlogPostForm.value).subscribe(
-      (response: Blog) => {
-        this.blogPost = response;
-        console.log('New user blog post created:', this.blogPost);
-        this.allBlogPosts.push(this.blogPost);
-        console.log('All blog posts:', this.allBlogPosts);
-        this.getAllBlogPosts();
-        createBlogPostForm.reset();
+  public onCreateUserPost(createPostForm: NgForm) {
+    console.log('Form data:', createPostForm.value);
+    this.postService.createUserPost(this.user.id, createPostForm.value).subscribe(
+      (response: Post) => {
+        this.post = response;
+        console.log('New user post created:', this.post);
+        this.allPosts.push(this.post);
+        console.log('All posts:', this.allPosts);
+        this.getAllPosts();
+        createPostForm.reset();
       },
       (error: HttpErrorResponse) => {
-        console.error('Error creating blog post:', error);
-        alert('An error occurred while creating the blog post. Please try again.');
+        console.error('Error creating post:', error);
+        alert('An error occurred while creating the post. Please try again.');
       }
     );
   }
 
+  toggleLike(post: Post) {
 
+    post.isLikedChk = !post.isLikedChk;
 
+    const isLiked = post.isLikedChk ? 'Y' : 'N';
+
+    this.likeService.saveLikeStatus(this.user.id, post.id!, isLiked).subscribe(
+      (response: any) => {
+        console.log('like clicked!');
+        console.log('userId', this.user.id);
+        console.log('postId', post.id);
+        post.isLiked = isLiked;
+        console.log('is post liked?', post.isLiked);
+        console.log('is this liked? ', post.isLikedChk);
+      },
+
+      (error: any) => {
+        console.log('error');
+        console.log('could not like/unlike the post!');
+        alert(error.message);
+        post.isLikedChk = !post.isLikedChk;
+      }
+    )
+
+    console.log('is this liked? ', post.isLiked);
+    console.log('post status =>', post);
+    console.log('who am i? =>', this.user);
+  }
+
+  handleLogout() {
+    localStorage.removeItem('currentUser')
+    this.router.navigate(['/login']);
+  }
+
+  public getAllLikesByUser() {
+    this.likeService.getAllLikesByUser(this.user.id!).subscribe(
+      (response: Post[])  => {
+        this.likedPosts = response;
+        console.log('here are my liked posts =>', this.likedPosts)
+        this.allPosts.forEach(post => {
+          const likedPost = this.likedPosts.find(lp => lp.id === post.id)
+          if (likedPost) {
+            post.isLikedChk = true;
+            post.isLiked = 'Y';
+          }
+        });
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.message);
+      }
+    )
+  }
 }

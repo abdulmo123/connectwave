@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     bio: '',
     createdDate: undefined,
     lastLoginDate: undefined,
-    userBlogPosts: undefined,
+    userPosts: undefined,
   };
 
   constructor(private router: Router, private auth: AuthService) {};
@@ -34,11 +34,14 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         console.log('response => ', response);
         this.user = response;
+      (response: any) => {
+        console.log('response => ', response);
+        this.user = response;
         console.log('success!');
         console.log('my user ==>', this.user);
         console.log('user id =>', this.user.id);
-        sessionStorage.setItem('userId', JSON.stringify(this.user.id));
         console.log(this.user.email,":",this.user.password);
+        this.auth.setCurrentUser(this.user);
         this.auth.setCurrentUser(this.user);
         this.router.navigate(['/home'])
       },
