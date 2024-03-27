@@ -28,6 +28,7 @@ export class AuthService {
       btoa(user.email + ':' + user.password)
     });
     return this.http.get(`${environment.hostUrl}/login`, { headers } )
+    return this.http.get(`${environment.hostUrl}/login`, { headers } )
   }
 
   signup(user: User) {
