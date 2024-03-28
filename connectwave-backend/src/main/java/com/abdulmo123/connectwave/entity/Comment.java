@@ -1,5 +1,6 @@
 package com.abdulmo123.connectwave.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -20,10 +21,12 @@ public class Comment {
     @Column(name="created_date", nullable=false, updatable=false)
     private Date createdDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "comment-user")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @JsonBackReference(value = "comment-post")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;

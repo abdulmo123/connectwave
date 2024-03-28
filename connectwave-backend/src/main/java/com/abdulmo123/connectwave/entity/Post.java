@@ -30,18 +30,19 @@ public class Post implements Serializable {
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> postLikes = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> postComments = new ArrayList<>();
 
     @Transient
     private String publisherName;
 
     public Post() {}
 
-    public Post(String content, Date createdDate, User user, String publisherName) {
+    public Post(String content, Date createdDate, User user, List<Comment> postComments, String publisherName) {
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
+        this.postComments = postComments;
         this.publisherName = publisherName;
     }
 
@@ -81,6 +82,14 @@ public class Post implements Serializable {
         return user != null ? user.getFirstName() + " " + user.getLastName() : null;
     }
 
+    public List<Comment> getPostComments() {
+        return postComments;
+    }
+
+    public void setPostComments(List<Comment> postComments) {
+        this.postComments = postComments;
+    }
+
     public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
     }
@@ -91,7 +100,7 @@ public class Post implements Serializable {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", createdDate=" + createdDate +
-                ", postLikes=" + postLikes +
+                ", postComments=" + postComments +
                 ", publisherName='" + publisherName + '\'' +
                 '}';
     }
