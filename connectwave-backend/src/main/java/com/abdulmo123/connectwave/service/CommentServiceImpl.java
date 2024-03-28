@@ -39,18 +39,14 @@ public class CommentServiceImpl implements CommentService {
                 Optional<Post> optionalPost = postRepository.findById(postId);
                 if (optionalPost.isPresent()) {
                     Post post = optionalPost.get();
-                    String content = comment.getContent();
-                    comment.setCreatedDate(new Date());
                     comment.setPost(post);
                     comment.setUser(user);
-
-                    return commentRepository.save(comment); // Save the comment to the database
+                    commentRepository.addCommentToPost(comment.getContent(), userId, postId);
                 }
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("User is not found " + userId + " OR Post is not found " + postId + "!");
         }
-
         return null;
     }
 

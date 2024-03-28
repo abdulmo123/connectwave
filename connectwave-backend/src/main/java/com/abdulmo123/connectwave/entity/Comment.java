@@ -4,21 +4,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "content", nullable = false)
     private String content;
 
     @CreatedDate
-    @Column(name="created_date", nullable=false, updatable=false)
+    @Column(name="created_date", updatable=false)
     private Date createdDate;
 
     @JsonBackReference(value = "comment-user")

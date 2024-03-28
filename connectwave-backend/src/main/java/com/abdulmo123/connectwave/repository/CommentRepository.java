@@ -17,11 +17,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "select c.* from connectwave.comment c where c.user_id = :userId", nativeQuery = true)
     List<Comment> getAllCommentsByUser(@Param("userId") Long userId);
 
-    /*@Modifying
+    @Modifying
     @Query(value = "insert into connectwave.comment (content, created_date, post_id, user_id) " +
             "values (:content, current_timestamp, :postId, :userId)", nativeQuery = true)
     @Transactional
-    Comment addCommentToPost(@Param("userId") Long userId, @Param("postId") Long postId);
-*/
+    void addCommentToPost(@Param("content") String content, @Param("userId") Long userId, @Param("postId") Long postId);
 
 }
