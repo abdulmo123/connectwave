@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
+import { Comment } from 'src/app/models/comment';
 import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private cdr: ChangeDetectorRef, private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
+  constructor(private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
   ngOnInit(): void {
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
@@ -46,6 +46,20 @@ export class HomeComponent implements OnInit {
             minute: 'numeric',
             hour12: true
           });
+
+          if (post.postComments) {
+            post.postComments.forEach((comment: Comment) => {
+              comment.formattedDate = new Date(comment.createdDate!).toLocaleString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+              });
+            });
+          }
         });
         this.allPosts = response;
       },

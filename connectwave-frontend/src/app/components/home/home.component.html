@@ -83,18 +83,17 @@
                         <div class="clearfix" style="margin: -15px"></div>
                         <hr>
                         <ul class="media-list" style="margin-top: -15px">
-                          <li class="media">
+                          <li *ngFor="let comment of post.postComments" class="media">
                             <a href="#" class="pull-left">
                               <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
                             </a>
                             <div class="media-body">
                               <span class="text-muted pull-right">
-                                <small class="text-muted">30 min ago</small>
+                                <small class="text-muted">{{comment.formattedDate}}</small>
                               </span>
-                              <strong class="text-success">@LaurenceCorreil</strong>
-                              <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Lorem ipsum dolor adipiscing elit.
+                              <strong class="text-success">{{comment.publisherName}}</strong>
+                              <p *ngIf="post.postComments !== null">
+                                {{comment.content}}
                               </p>
                             </div>
                           </li>
