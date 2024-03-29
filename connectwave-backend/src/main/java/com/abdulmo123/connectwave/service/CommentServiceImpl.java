@@ -41,6 +41,9 @@ public class CommentServiceImpl implements CommentService {
                     Post post = optionalPost.get();
                     comment.setPost(post);
                     comment.setUser(user);
+                    String publisherName = user.getFirstName() + " " + user.getLastName();
+                    comment.setPublisherName(publisherName);
+
                     commentRepository.addCommentToPost(comment.getContent(), userId, postId);
                 }
             }

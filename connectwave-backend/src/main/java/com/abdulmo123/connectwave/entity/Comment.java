@@ -33,13 +33,17 @@ public class Comment implements Serializable {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
+    @Transient
+    private String publisherName;
+
     public Comment () {}
 
-    public Comment (String content, Date createdDate, User user, Post post) {
+    public Comment (String content, Date createdDate, User user, Post post, String publisherName) {
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
         this.post = post;
+        this.publisherName = publisherName;
     }
 
     public Long getId() {
@@ -81,4 +85,13 @@ public class Comment implements Serializable {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    public String getPublisherName() {
+        return user != null ? user.getFirstName() + " " + user.getLastName() : null;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
 }
