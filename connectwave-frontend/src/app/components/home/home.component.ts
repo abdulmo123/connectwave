@@ -7,6 +7,7 @@ import { Comment } from 'src/app/models/comment';
 import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-home',
@@ -15,27 +16,34 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private postService: PostService, private auth: AuthService, private likeService: LikeService) {}
+  constructor(private router: Router,
+    private postService: PostService,
+    private auth: AuthService,
+    private likeService: LikeService,
+    private commentService: CommentService) {}
+
   ngOnInit(): void {
+    this.getAllPosts();
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
+    this.getAllLikesByUser();
     const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
     this.allPosts.forEach(post => {
       post.isLikedChk = likedPosts.includes(post.id);
-  });
-    this.getAllPosts();
-    this.getAllLikesByUser();
-    console.log('ALL posts', this.allPosts);
+    });
   }
 
   user: any;
   post: Post | undefined;
+  comment: Comment | undefined;
   allPosts: Post[] = [];
   likedPosts: Post[] = [];
 
   public getAllPosts() {
     this.postService.getAllPosts().subscribe(
       (response: Post[]) => {
+        this.allPosts = response;
+        console.log('ALL posts', this.allPosts);
         response.forEach((post: Post) => {
           post.formattedDate = new Date(post.createdDate!).toLocaleString('en-US', {
             weekday: 'short',
@@ -61,7 +69,6 @@ export class HomeComponent implements OnInit {
             });
           }
         });
-        this.allPosts = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -146,6 +153,26 @@ export class HomeComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         console.log(error.message);
+      }
+    )
+  }
+
+  onAddCommentToPost(post: Post, createCommentForm: NgForm) {
+    console.log('Form data:', createCommentForm.value);
+    console.log('which post?', post);
+    this.commentService.addCommentToPost(this.user.id, post.id!, createCommentForm.value).subscribe(
+      (response: any) => {
+        this.comment = response;
+        console.log('new comment added to post!', this.comment);
+        post?.postComments?.push(this.comment!);
+        console.log('post info', post);
+        this.getAllPosts();
+        this.getAllLikesByUser();
+        createCommentForm.reset();
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error adding comment to post:', error);
+        alert(error.message);
       }
     )
   }

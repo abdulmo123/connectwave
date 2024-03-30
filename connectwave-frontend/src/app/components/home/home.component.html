@@ -77,9 +77,13 @@
                         Comment panel
                       </div> -->
                       <div class="panel-body" style="margin-bottom: -20px;">
-                        <textarea class="form-control" placeholder="write a comment..." rows="2.5"></textarea>
-                        <br>
-                        <button type="button" class="btn btn-info pull-right" style="margin-top: -15px">Post</button>
+                        <form #createCommentForm="ngForm" (ngSubmit)="onAddCommentToPost(post, createCommentForm)">
+                          <textarea ngModel name="content" class="form-control" placeholder="write a comment..."
+                            rows="2.5"></textarea>
+                          <br>
+                          <button [disabled]="createCommentForm.invalid" type="submit" class="btn btn-info pull-right"
+                            style="margin-top: -15px">Post</button>
+                        </form>
                         <div class="clearfix" style="margin: -15px"></div>
                         <hr>
                         <ul class="media-list" style="margin-top: -15px">
