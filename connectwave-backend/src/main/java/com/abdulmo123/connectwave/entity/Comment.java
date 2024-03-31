@@ -1,40 +1,49 @@
 package com.abdulmo123.connectwave.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "content", nullable = false)
     private String content;
 
     @CreatedDate
-    @Column(name="created_date", nullable=false, updatable=false)
+    @Column(name="created_date", updatable=false)
     private Date createdDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference(value = "comment-user")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @JsonBackReference(value = "comment-post")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
+    @Transient
+    private String publisherName;
+
     public Comment () {}
 
-    public Comment (String content, Date createdDate, User user, Post post) {
+    public Comment (String content, Date createdDate, User user, Post post, String publisherName) {
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
         this.post = post;
+        this.publisherName = publisherName;
     }
 
     public Long getId() {
@@ -76,4 +85,13 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    public String getPublisherName() {
+        return user != null ? user.getFirstName() + " " + user.getLastName() : null;
+    }
+
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
+
 }
