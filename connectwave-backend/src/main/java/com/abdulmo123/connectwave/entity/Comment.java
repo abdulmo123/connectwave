@@ -5,44 +5,44 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name="post")
-public class Post implements Serializable {
+@Table(name = "comment")
+public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column(name="content")
+    @Column(name = "content", nullable = false)
     private String content;
 
     @CreatedDate
-    @Column(name="created_date", nullable=false, updatable=false)
+    @Column(name="created_date", updatable=false)
     private Date createdDate;
 
-    @JsonBackReference
+    @JsonBackReference(value = "comment-user")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> postComments = new ArrayList<>();
+    @JsonBackReference(value = "comment-post")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private Post post;
 
     @Transient
     private String publisherName;
 
-    public Post() {}
+    public Comment () {}
 
-    public Post(String content, Date createdDate, User user, List<Comment> postComments, String publisherName) {
+    public Comment (String content, Date createdDate, User user, Post post, String publisherName) {
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
-        this.postComments = postComments;
+        this.post = post;
         this.publisherName = publisherName;
     }
 
@@ -55,7 +55,7 @@ public class Post implements Serializable {
     }
 
     public String getContent() {
-        return this.content;
+        return content;
     }
 
     public void setContent(String content) {
@@ -63,7 +63,7 @@ public class Post implements Serializable {
     }
 
     public Date getCreatedDate() {
-        return this.createdDate;
+        return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
@@ -71,37 +71,27 @@ public class Post implements Serializable {
     }
 
     public User getUser() {
-        return this.user;
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
     public String getPublisherName() {
         return user != null ? user.getFirstName() + " " + user.getLastName() : null;
-    }
-
-    public List<Comment> getPostComments() {
-        return postComments;
-    }
-
-    public void setPostComments(List<Comment> postComments) {
-        this.postComments = postComments;
     }
 
     public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", createdDate=" + createdDate +
-                ", postComments=" + postComments +
-                ", publisherName='" + publisherName + '\'' +
-                '}';
-    }
 }

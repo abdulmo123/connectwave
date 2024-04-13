@@ -1,14 +1,12 @@
 import { User } from "./user";
-import { Comment } from "./comment";
+import { Post } from "./post";
 
-export class Post {
+export class Comment {
   id: number | undefined;
   content: string | undefined;
   createdDate: Date | undefined;
   user: User | undefined;
-  formattedDate?: string;
+  post: Post | undefined;
   publisherName?: string;
-  isLikedChk?: boolean;
-  isLiked?: string;
-  postComments: Comment[] | undefined;
+  formattedDate?: string;
 }

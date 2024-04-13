@@ -66,8 +66,48 @@
                   (click)="toggleLike(post)">
                 </a>
               </li>
-              <li><a href="javascript:void(0);" class="fa fa-comment"></a></li>
+              <li><a href="javascript:void(0);" [style.color]="'black'" class="fa fa-comment"></a></li>
             </ul>
+            <div class="container">
+              <div class="row bootstrap snippets bootdeys" style="width: 70em">
+                <div class="col-md-8 col-sm-12">
+                  <div class="comment-wrapper">
+                    <div class="panel panel-info">
+                      <!-- <div class="panel-heading">
+                        Comment panel
+                      </div> -->
+                      <div class="panel-body" style="margin-bottom: -20px;">
+                        <form #createCommentForm="ngForm" (ngSubmit)="onAddCommentToPost(post, createCommentForm)">
+                          <textarea ngModel name="content" class="form-control" placeholder="write a comment..."
+                            rows="2.5"></textarea>
+                          <br>
+                          <button [disabled]="createCommentForm.invalid" type="submit" class="btn btn-info pull-right"
+                            style="margin-top: -15px">Post</button>
+                        </form>
+                        <div class="clearfix" style="margin: -15px"></div>
+                        <hr>
+                        <ul class="media-list" style="margin-top: -15px">
+                          <li *ngFor="let comment of post.postComments" class="media">
+                            <a href="#" class="pull-left">
+                              <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                            </a>
+                            <div class="media-body">
+                              <span class="text-muted pull-right">
+                                <small class="text-muted">{{comment.formattedDate}}</small>
+                              </span>
+                              <strong class="text-success">{{comment.publisherName}}</strong>
+                              <p *ngIf="post.postComments !== null">
+                                {{comment.content}}
+                              </p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <ul class="pagination pagination-primary">
