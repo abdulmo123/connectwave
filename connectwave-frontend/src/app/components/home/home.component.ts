@@ -55,6 +55,8 @@ export class HomeComponent implements OnInit {
             hour12: true
           });
 
+          this.getNumLikesForPost(post);
+
           if (post.postComments) {
             post.postComments.forEach((comment: Comment) => {
               comment.formattedDate = new Date(comment.createdDate!).toLocaleString('en-US', {
@@ -115,6 +117,7 @@ export class HomeComponent implements OnInit {
         post.isLiked = isLiked;
         console.log('is post liked?', post.isLiked);
         console.log('is this liked? ', post.isLikedChk);
+        this.getNumLikesForPost(post);
       },
 
       (error: any) => {
@@ -155,6 +158,18 @@ export class HomeComponent implements OnInit {
         console.log(error.message);
       }
     )
+  }
+
+  public getNumLikesForPost(post: Post): void {
+    this.likeService.getNumLikesForPost(post.id!).subscribe(
+      (response: any) => {
+        post.numOfLikes = response;
+        console.log('num of likes for post => ', post.numOfLikes);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   onAddCommentToPost(post: Post, createCommentForm: NgForm) {
