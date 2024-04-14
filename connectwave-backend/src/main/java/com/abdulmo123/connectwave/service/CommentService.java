@@ -8,4 +8,6 @@ public interface CommentService {
     List<Comment> getAllCommentsByUser (Long userId);
 
     Comment addCommentToPost(Comment comment, Long userId, Long postId);
+
+    int numCommentsForPost(Long postId);
 }
