@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
           });
 
           this.getNumLikesForPost(post);
+          this.getNumCommentsForPost(post);
 
           if (post.postComments) {
             post.postComments.forEach((comment: Comment) => {
@@ -170,6 +171,18 @@ export class HomeComponent implements OnInit {
         alert(error.message);
       }
     );
+  }
+
+  public getNumCommentsForPost(post: Post): void {
+    this.commentService.getNumCommentsForPost(post.id!).subscribe(
+      (response: any) => {
+        post.numOfComments = response;
+        console.log('num of comments for post => ', post.numOfComments);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
   }
 
   onAddCommentToPost(post: Post, createCommentForm: NgForm) {

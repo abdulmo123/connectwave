@@ -27,4 +27,10 @@ public class CommentController {
         Comment newCommentToPost = commentService.addCommentToPost(comment, userId, postId);
         return new ResponseEntity<>(newCommentToPost, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getNumCommentsForPost/{postId}")
+    public ResponseEntity<Integer> numCommentsForPost(@PathVariable("postId") Long postId) {
+        int numCommentsForPost = commentService.numCommentsForPost(postId);
+        return new ResponseEntity<>(numCommentsForPost, HttpStatus.OK);
+    }
 }

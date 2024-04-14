@@ -13,4 +13,8 @@ export class CommentService {
   public addCommentToPost(userId: number, postId: number, userComment: Comment): Observable<Comment> {
     return this.http.post<Comment>(`${environment.hostUrl}/api/v1/comments/addCommentToPost/${userId}/${postId}`, userComment);
   }
+
+  public getNumCommentsForPost(postId: number): Observable<number> {
+    return this.http.get<number>(`${environment.hostUrl}/api/v1/comments/getNumCommentsForPost/${postId}`);
+  }
 }

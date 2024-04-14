@@ -12,4 +12,5 @@ export class Post {
   isLiked?: string;
   postComments: Comment[] | undefined;
   numOfLikes?: number;
+  numOfComments?: number;
 }
