@@ -49,4 +49,9 @@ public class LikeServiceImpl implements LikeService {
         }
         return null;
     }
+
+    @Override
+    public int numLikesForPost(Long postId) {
+        return likeRepository.numLikesForPost(postId);
+    }
 }

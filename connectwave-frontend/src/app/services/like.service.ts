@@ -18,4 +18,8 @@ export class LikeService {
   public getAllLikesByUser(userId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`${environment.hostUrl}/api/v1/likes/getAllLikesByUser/${userId}`);
   }
+
+  public getNumLikesForPost(postId: number): Observable<number> {
+    return this.http.get<number>(`${environment.hostUrl}/api/v1/likes/getNumLikesForPost/${postId}`);
+  }
 }

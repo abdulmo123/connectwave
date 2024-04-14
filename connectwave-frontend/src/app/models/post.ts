@@ -11,4 +11,5 @@ export class Post {
   isLikedChk?: boolean;
   isLiked?: string;
   postComments: Comment[] | undefined;
+  numOfLikes?: number;
 }
