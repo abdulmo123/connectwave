@@ -3,6 +3,7 @@ package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.entity.AppUserDetails;
 import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.exception.UserNotFoundException;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import com.abdulmo123.connectwave.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,11 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findUserById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
     }
 
 }

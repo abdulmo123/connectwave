@@ -22,4 +22,9 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping("/find/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
+        User user = userService.findUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
