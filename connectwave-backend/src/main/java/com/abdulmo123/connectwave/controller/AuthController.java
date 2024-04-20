@@ -11,7 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("")
@@ -29,7 +30,7 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             User currentUser = ((AppUserDetails) auth.getPrincipal()).getUser();
-            currentUser.setLastLoginDate(new Date());
+            currentUser.setLastLoginDate(Date.valueOf(LocalDate.now())); // setCreatedDate(Date.valueOf(LocalDate.now()));
             userRepository.save(currentUser);
             return ResponseEntity.ok(currentUser);
         }

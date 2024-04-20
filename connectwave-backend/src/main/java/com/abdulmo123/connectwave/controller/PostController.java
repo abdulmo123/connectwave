@@ -1,5 +1,6 @@
 package com.abdulmo123.connectwave.controller;
 
+import com.abdulmo123.connectwave.dto.PostDto;
 import com.abdulmo123.connectwave.entity.Post;
 import com.abdulmo123.connectwave.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,13 @@ public class PostController {
     @GetMapping("/getAllPosts")
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> allPosts = postService.getAllPosts();
+        return new ResponseEntity<>(allPosts, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllPostsDtos")
+    public ResponseEntity<List<PostDto>> getAllPostDtos() {
+        List<PostDto> allPosts = postService.getAllPostDtos();
+        System.out.println(allPosts);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 }

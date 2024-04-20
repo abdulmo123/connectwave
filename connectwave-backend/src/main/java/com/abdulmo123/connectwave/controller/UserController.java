@@ -1,5 +1,6 @@
 package com.abdulmo123.connectwave.controller;
 
+import com.abdulmo123.connectwave.dto.UserDto;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ public class UserController {
     @GetMapping("/find/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
         User user = userService.findUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/findUserByPostId/{postId}")
+    public ResponseEntity<UserDto> findUserByPostId(@PathVariable("postId") Long postId) {
+        UserDto user = userService.findUserByPostId(postId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

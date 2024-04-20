@@ -1,14 +1,17 @@
 package com.abdulmo123.connectwave.service;
 
+import com.abdulmo123.connectwave.dto.PostDto;
 import com.abdulmo123.connectwave.entity.Post;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +36,7 @@ public class PostServiceImpl implements PostService {
             User user = optionalUser.get();
             String content = post.getContent();
             post.setContent(content);
-            post.setCreatedDate(new Date());
+            post.setCreatedDate(Date.valueOf(LocalDate.now()));
             post.setUser(user);
 
             String publisherName = user.getFirstName() + " " + user.getLastName();
@@ -51,5 +54,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAllPosts() {
         return postRepository.getAllPosts();
+    }
+
+    @Override
+    public List<PostDto> getAllPostDtos() {
+        return postRepository.getAllPostDtos();
     }
 }

@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.service;
 
 
+import com.abdulmo123.connectwave.dto.UserDto;
 import com.abdulmo123.connectwave.entity.AppUserDetails;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
@@ -12,7 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class UserService implements UserDetailsService {
     public User saveUser(User user) {
         PasswordGenerator passwordGenerator = new PasswordGenerator();
         user.setPassword(passwordGenerator.encodePassword(user.getPassword()));
-        user.setCreatedDate(new Date());
+        user.setCreatedDate(Date.valueOf(LocalDate.now()));
         return userRepository.save(user);
     }
 
@@ -58,4 +60,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found!"));
     }
 
+    public UserDto findUserByPostId(Long postId) {
+        return userRepository.findUserByPostId(postId);
+    }
 }
