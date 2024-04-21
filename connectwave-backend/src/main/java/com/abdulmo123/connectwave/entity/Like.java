@@ -3,7 +3,7 @@ package com.abdulmo123.connectwave.entity;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "likes", uniqueConstraints = {@UniqueConstraint(columnNames = { "user_id", "post_id" })})

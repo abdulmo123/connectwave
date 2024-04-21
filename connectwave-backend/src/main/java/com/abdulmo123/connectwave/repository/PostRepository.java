@@ -31,4 +31,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Transactional
     void likePost(@Param("userId") Long userId, @Param("postId") Long postId);
 
+    @Query("SELECT p, u FROM Post p LEFT JOIN p.user u ORDER BY p.createdDate DESC")
+    List<Object[]> getPostsAndUsers();
 }
