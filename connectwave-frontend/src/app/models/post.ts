@@ -5,7 +5,7 @@ export class Post {
   id: number | undefined;
   content: string | undefined;
   createdDate: Date | undefined;
-  user: User | undefined;
+  user: User | null = null;
   formattedDate?: string;
   publisherName?: string;
   isLikedChk?: boolean;

@@ -75,9 +75,15 @@ public class PostServiceImpl implements PostService {
                             comment.getId(),
                             comment.getContent(),
                             comment.getCreatedDate(),
-                            comment.getPublisherName()
+                            new UserDto(
+                                    comment.getUser().getId(),
+                                    comment.getUser().getEmail(),
+                                    comment.getUser().getFirstName(),
+                                    comment.getUser().getLastName(),
+                                    comment.getUser().getGender(),
+                                    comment.getUser().getBio()
                             )
-                    )
+                    ))
                     .collect(Collectors.toList());
 
             UserDto userDto = new UserDto(

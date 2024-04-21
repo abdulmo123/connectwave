@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     password: '',
     firstName: '',
     lastName: '',
+    gender: '',
     bio: '',
     createdDate: undefined,
     lastLoginDate: undefined

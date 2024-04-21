@@ -13,7 +13,7 @@
   </div>
 </nav>
 <div class="header">
-  <h2>Blog Name</h2>
+  <!-- <h2>Blog Name</h2> -->
 </div>
 
 <div class="container bootstrap snippets bootdey">
@@ -47,11 +47,13 @@
         <div *ngFor="let post of allPosts" class="card single_post">
           <div class="body">
             <div class="img-post">
-              <img class="d-block img-fluid rounded-circle" src="https://www.bootdey.com/image/800x280/FFB6C1/000000"
-                alt="First slide">
+              <a style="cursor:pointer" (click)="navigateToUserProfile(this.post.user?.id!)" class="pull-left">
+                <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+              </a>
             </div>
             <div class="publisher-info">
-              <h5><a>{{ this.post.publisherName }}</a></h5>
+              <h5 style="cursor: pointer" (click)="navigateToUserProfile(this.post.user?.id!)"><a>{{
+                  this.post.user?.firstName + " " + this.post.user?.lastName}}</a></h5>
             </div>
             <p>{{ post?.content }}</p>
           </div>
@@ -76,9 +78,6 @@
                 <div class="col-md-8 col-sm-12">
                   <div class="comment-wrapper">
                     <div class="panel panel-info">
-                      <!-- <div class="panel-heading">
-                        Comment panel
-                      </div> -->
                       <div class="panel-body" style="margin-bottom: -20px;">
                         <form #createCommentForm="ngForm" (ngSubmit)="onAddCommentToPost(post, createCommentForm)">
                           <textarea ngModel name="content" class="form-control" placeholder="write a comment..."
@@ -91,14 +90,18 @@
                         <hr>
                         <ul class="media-list" style="margin-top: -15px">
                           <li *ngFor="let comment of post.postComments" class="media">
-                            <a href="#" class="pull-left">
-                              <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                            <a style="cursor:pointer" (click)="navigateToUserProfile(comment.user?.id!)"
+                              class="pull-left">
+                              <img style="width: 40px !important; height: 40px !important;"
+                                src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
                             </a>
                             <div class="media-body">
                               <span class="text-muted pull-right">
                                 <small class="text-muted">{{comment.formattedDate}}</small>
                               </span>
-                              <strong class="text-success">{{comment.publisherName}}</strong>
+                              <strong style="cursor: pointer" (click)="navigateToUserProfile(comment.user?.id!)"
+                                class="text-success">{{comment.user?.firstName + " " +
+                                comment.user?.lastName}}</strong>
                               <p *ngIf="post.postComments !== null">
                                 {{comment.content}}
                               </p>
@@ -218,6 +221,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

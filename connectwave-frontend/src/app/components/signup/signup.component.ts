@@ -20,6 +20,7 @@ export class SignupComponent {
     password: '',
     firstName: '',
     lastName: '',
+    gender: '',
     bio: '',
     createdDate: undefined,
     lastLoginDate: undefined,

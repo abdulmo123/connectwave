@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
+import { ProfileNavService } from 'src/app/services/profile-nav.service';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
     private postService: PostService,
     private auth: AuthService,
     private likeService: LikeService,
-    private commentService: CommentService) {}
+    private commentService: CommentService,
+    private profileNavService: ProfileNavService) {}
 
   ngOnInit(): void {
     this.getAllPosts();
@@ -44,7 +46,7 @@ export class HomeComponent implements OnInit {
       (response: Post[]) => {
         this.allPosts = response;
         console.log('ALL posts', this.allPosts);
-        response.forEach((post: Post) => {
+        this.allPosts.forEach(post => {
           post.formattedDate = new Date(post.createdDate!).toLocaleString('en-US', {
             weekday: 'short',
             year: 'numeric',
@@ -76,7 +78,7 @@ export class HomeComponent implements OnInit {
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    )
+    );
   }
 
   dateFormatter() {
@@ -165,7 +167,6 @@ export class HomeComponent implements OnInit {
     this.likeService.getNumLikesForPost(post.id!).subscribe(
       (response: any) => {
         post.numOfLikes = response;
-        console.log('num of likes for post => ', post.numOfLikes);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -177,7 +178,6 @@ export class HomeComponent implements OnInit {
     this.commentService.getNumCommentsForPost(post.id!).subscribe(
       (response: any) => {
         post.numOfComments = response;
-        console.log('num of comments for post => ', post.numOfComments);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -203,5 +203,11 @@ export class HomeComponent implements OnInit {
         alert(error.message);
       }
     )
+  }
+
+  navigateToUserProfile(userId: number) {
+    this.router.navigate(['/user', userId]);
+    this.profileNavService.setUserData(userId);
+    localStorage.setItem('userProfileId', userId.toString());
   }
 }

@@ -10,12 +10,12 @@ public class CommentDto implements Serializable {
     private Long id;
     private String content;
     private Date createdDate;
-    private String publisherName;
+    private UserDto user;
 
-    public CommentDto(Long id, String content, Date createdDate, String publisherName) {
+    public CommentDto(Long id, String content, Date createdDate, UserDto user) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
-        this.publisherName = publisherName;
+        this.user = user;
     }
 }
