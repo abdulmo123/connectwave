@@ -30,7 +30,7 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             User currentUser = ((AppUserDetails) auth.getPrincipal()).getUser();
-            currentUser.setLastLoginDate(Date.valueOf(LocalDate.now())); // setCreatedDate(Date.valueOf(LocalDate.now()));
+            currentUser.setLastLoginDate(Date.valueOf(LocalDate.now()));
             userRepository.save(currentUser);
             return ResponseEntity.ok(currentUser);
         }

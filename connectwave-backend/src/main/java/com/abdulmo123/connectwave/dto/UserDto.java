@@ -7,13 +7,19 @@ import java.sql.Date;
 
 @Data
 public class UserDto implements Serializable {
-    private final Long id;
-    private final String email;
-    private final String password;
-    private final String firstName;
-    private final String lastName;
-    private final String gender;
-    private final String bio;
-    private final Date createdDate;
-    private final Date lastLoginDate;
+    private Long id;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String bio;
+
+    public UserDto(Long id, String email, String firstName, String lastName, String gender, String bio) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.bio = bio;
+    }
 }

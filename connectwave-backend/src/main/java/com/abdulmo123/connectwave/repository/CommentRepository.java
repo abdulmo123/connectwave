@@ -25,4 +25,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query(value = "select count(*) from connectwave.comment c where c.post_id = :postId", nativeQuery = true)
     int numCommentsForPost(@Param("postId") Long postId);
+
+    @Query(value = "select c.* from connectwave.comment c where c.post_id = :postId", nativeQuery = true)
+    List<Comment> getAllCommentsForPost(@Param("postId") Long postId);
 }

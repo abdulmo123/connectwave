@@ -1,6 +1,5 @@
 package com.abdulmo123.connectwave.repository;
 
-import com.abdulmo123.connectwave.dto.PostDto;
 import com.abdulmo123.connectwave.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,10 +31,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Transactional
     void likePost(@Param("userId") Long userId, @Param("postId") Long postId);
 
-    @Query("SELECT new com.abdulmo123.connectwave.dto.PostDto(" +
-            "p.id, p.content, p.createdDate, " +
-            "new com.abdulmo123.connectwave.dto.UserDto(u.id, u.email, u.password, u.firstName, u.lastName, u.gender, u.bio, u.createdDate, u.lastLoginDate)) " +
-            "FROM Post p LEFT JOIN p.user u " +
-            "ORDER BY p.createdDate DESC")
-    List<PostDto> getAllPostDtos();
+    @Query("SELECT p, u FROM Post p LEFT JOIN p.user u ORDER BY p.createdDate DESC")
+    List<Object[]> getPostsAndUsers();
 }

@@ -32,7 +32,6 @@ public class PostController {
     @GetMapping("/getAllPostsDtos")
     public ResponseEntity<List<PostDto>> getAllPostDtos() {
         List<PostDto> allPosts = postService.getAllPostDtos();
-        System.out.println(allPosts);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 }
