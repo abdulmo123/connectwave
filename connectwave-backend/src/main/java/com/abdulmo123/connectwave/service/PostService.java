@@ -12,4 +12,6 @@ public interface PostService {
     List<Post> getAllPosts();
 
     List<PostDto> getAllPostDtos();
+
+    List<Post> getAllPostsByUser(Long userId);
 }

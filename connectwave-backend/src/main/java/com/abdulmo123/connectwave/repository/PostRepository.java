@@ -33,4 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p, u FROM Post p LEFT JOIN p.user u ORDER BY p.createdDate DESC")
     List<Object[]> getPostsAndUsers();
+
+    @Query(value = "select * from connectwave.post p where p.user_id = :userId", nativeQuery = true)
+    List<Post> getAllPostsByUser(@Param("userId") Long userId);
 }
