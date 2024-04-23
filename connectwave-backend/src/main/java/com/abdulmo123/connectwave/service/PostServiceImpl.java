@@ -101,4 +101,9 @@ public class PostServiceImpl implements PostService {
 
         return allPostsInfo;
     }
+
+    @Override
+    public List<Post> getAllPostsByUser(Long userId) {
+        return postRepository.getAllPostsByUser(userId);
+    }
 }

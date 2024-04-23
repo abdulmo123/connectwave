@@ -206,7 +206,7 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToUserProfile(userId: number) {
-    this.router.navigate(['/user', userId]);
+    this.router.navigate(['/user/about', userId]);
     this.profileNavService.setUserData(userId);
     localStorage.setItem('userProfileId', userId.toString());
   }

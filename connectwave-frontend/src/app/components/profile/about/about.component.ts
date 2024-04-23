@@ -5,11 +5,11 @@ import { User } from 'src/app/models/user';
 import { ProfileNavService } from 'src/app/services/profile-nav.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class AboutComponent implements OnInit {
 
   private userId: number | undefined;
   userInfo: User | undefined;
@@ -42,5 +42,9 @@ export class ProfileComponent implements OnInit {
   navToHome() {
     this.router.navigate(['/home']);
     localStorage.removeItem('userProfileId');
+  }
+
+  navToPostsTab() {
+    this.router.navigate(['/user/posts', this.userId]);
   }
 }
