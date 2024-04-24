@@ -3,36 +3,28 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
-import { PostService } from 'src/app/services/post.service';
+import { LikeService } from 'src/app/services/like.service';
 import { ProfileNavService } from 'src/app/services/profile-nav.service';
 
 @Component({
-  selector: 'app-posts',
-  templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.css']
+  selector: 'app-likes',
+  templateUrl: './likes.component.html',
+  styleUrls: ['./likes.component.css']
 })
-export class PostsComponent implements OnInit {
+export class LikesComponent implements OnInit {
 
   private userId: number | undefined;
   userInfo: User | undefined;
-  userPosts: Post[] = [];
+  userLikes: Post[] = [];
 
   constructor(
     private router: Router,
     private profileNavService: ProfileNavService,
-    private postService: PostService) {}
+    private likeService: LikeService) {}
 
   ngOnInit(): void {
-    // this.userId = this.profileNavService.getUserData();
     this.getUserProfileInfo();
-    this.getAllUserPosts();
-  }
-
-
-  navToAboutTab() {
-    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
-    this.userId = +tempid!;
-    this.router.navigate(['/user/about', this.userId]);
+    this.getAllLikesByUser();
   }
 
   getUserProfileInfo() {
@@ -49,11 +41,11 @@ export class PostsComponent implements OnInit {
     )
   }
 
-  getAllUserPosts() {
-    this.postService.getAllPostsByUser(this.userId!).subscribe(
+  getAllLikesByUser() {
+    this.likeService.getAllLikesByUser(this.userId!).subscribe(
       (response: Post[]) => {
-        this.userPosts = response;
-        console.log('user posts =>', this.userPosts);
+        this.userLikes = response;
+        console.log('user liked posts =>', this.userLikes);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -65,11 +57,15 @@ export class PostsComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  navToLikesTab() {
-    this.router.navigate(['/user/likes', this.userId]);
-  }
-
   navToCommentsTab() {
     this.router.navigate(['/user/comments', this.userId]);
+  }
+
+  navToAboutTab() {
+    this.router.navigate(['/user/about', this.userId]);
+  }
+
+  navToPostsTab() {
+    this.router.navigate(['/user/posts', this.userId]);
   }
 }
