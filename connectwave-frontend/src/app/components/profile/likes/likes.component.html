@@ -47,10 +47,11 @@
             <ul class="profile-header-tab nav nav-tabs">
               <li class="nav-item"><a style="cursor:pointer" (click)="navToAboutTab()" target="__blank"
                   class="nav-link_">ABOUT</a></li>
-              <li class="nav-item"><a style="cursor:pointer" target="__blank" class="nav-link_ active show">POSTS</a>
+              <li class="nav-item"><a style="cursor:pointer" (click)="navToPostsTab()" target="__blank"
+                  class="nav-link_">POSTS</a>
               </li>
-              <li class="nav-item"><a style="cursor:pointer" (click)="navToLikesTab()" target="__blank"
-                  class="nav-link_">LIKES</a></li>
+              <li class="nav-item"><a style="cursor:pointer" target="__blank" class="nav-link_ active show">LIKES</a>
+              </li>
               <li class="nav-item"><a style="cursor:pointer" (click)="navToCommentsTab()" target="__blank"
                   class="nav-link_">COMMENTS</a></li>
               <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list"
@@ -65,7 +66,7 @@
           <div class="row clearfix">
             <div class="container">
               <div class="col-lg-8 col-md-12 left-box">
-                <div *ngFor="let post of userPosts" class="card single_post">
+                <div *ngFor="let post of userLikes" class="card single_post">
                   <div class="body">
                     <div class="img-post">
                       <a style="cursor:pointer" class="pull-left">
@@ -94,7 +95,7 @@
                           {{post.numOfComments}}
                         </a></li>
                     </ul>
-                    <div class="container">
+                    <!-- <div class="container">
                       <div class="row bootstrap snippets bootdeys" style="width: 70em">
                         <div class="col-md-8 col-sm-12">
                           <div class="comment-wrapper">
@@ -125,7 +126,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

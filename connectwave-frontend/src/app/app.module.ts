@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/profile/about/about.component';
 import { PostsComponent } from './components/profile/posts/posts.component';
+import { LikesComponent } from './components/profile/likes/likes.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PostsComponent } from './components/profile/posts/posts.component';
     SignupComponent,
     HomeComponent,
     AboutComponent,
-    PostsComponent
+    PostsComponent,
+    LikesComponent
   ],
   imports: [
     BrowserModule,
