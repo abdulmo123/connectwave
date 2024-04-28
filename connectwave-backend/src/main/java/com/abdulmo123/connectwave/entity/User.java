@@ -54,9 +54,13 @@ public class User implements Serializable {
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
   private List<Post> userPosts = new ArrayList<>();
 
+  @JsonManagedReference
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Friendship> friends;
+
   public User() {}
 
-  public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts) {
+  public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts, List<Friendship> friends) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
@@ -66,6 +70,7 @@ public class User implements Serializable {
     this.createdDate = createdDate;
     this.lastLoginDate = lastLoginDate;
     this.userPosts = userPosts;
+    this.friends = friends;
   }
 
   public Long getId() { return id; }
@@ -112,6 +117,14 @@ public class User implements Serializable {
 
   public void setUserPosts(List<Post> userPosts) { this.userPosts = userPosts; }
 
+  public List<Friendship> getFriends() {
+    return friends;
+  }
+
+  public void setFriends(List<Friendship> friends) {
+    this.friends = friends;
+  }
+
   @Override
   public String toString() {
     return "User{" +
@@ -125,6 +138,7 @@ public class User implements Serializable {
             ", createdDate=" + createdDate +
             ", lastLoginDate=" + lastLoginDate +
             ", userPosts=" + userPosts +
+            ", friends=" + friends +
             '}';
   }
 }

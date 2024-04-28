@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { User } from '../models/user';
+import { Friendship } from '../models/friendship';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,11 @@ export class ProfileNavService {
 
   public getUserProfileInfo(userId: number): Observable<User> {
     return this.http.get<User>(`${environment.hostUrl}/api/v1/users/find/${userId}`);
+  }
+
+  public addFriend(userId: number, friendId: number): Observable<Friendship> {
+    return this.http.post<Friendship>(
+      `${environment.hostUrl}/api/v1/friendships/sendFriendshipRequest/${userId}/${friendId}`,
+      {});
   }
 }

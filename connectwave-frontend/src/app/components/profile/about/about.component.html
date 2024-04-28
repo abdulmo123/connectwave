@@ -45,7 +45,9 @@
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5">{{userInfo?.firstName + " " + userInfo?.lastName}}</h4>
                       <!-- <p class="m-b-10">Web And Frontend Developer</p> -->
-                      <a href="#" class="btn btn-xs btn-success">Edit Profile</a>
+                      <!-- <ng-template *ngIf="this.currentUser!.id == this.userInfo!.id"> -->
+                      <a (click)="onAddFriend()" class="btn btn-xs btn-success">Add Friend</a>
+                      <!-- </ng-template> -->
                     </div>
                     <!-- END profile-header-info -->
                   </div>
