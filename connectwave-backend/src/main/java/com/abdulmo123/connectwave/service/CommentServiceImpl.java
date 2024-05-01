@@ -45,6 +45,9 @@ public class CommentServiceImpl implements CommentService {
                     comment.setPublisherName(publisherName);
 
                     commentRepository.addCommentToPost(comment.getContent(), userId, postId);
+
+                    // grab the newly created comment and return that
+                    return commentRepository.getCommentCreated();
                 }
             }
         } catch (Exception e) {

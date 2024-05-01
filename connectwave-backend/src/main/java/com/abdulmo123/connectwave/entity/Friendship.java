@@ -3,6 +3,9 @@ package com.abdulmo123.connectwave.entity;
 import com.abdulmo123.connectwave.enums.FriendshipStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.sql.Date;
 
 @Entity
 @Table(name = "friendship")
@@ -27,7 +30,18 @@ public class Friendship {
     @Column(name = "status")
     private FriendshipStatus status;
 
+    @CreatedDate
+    @Column(name = "created_date", nullable = false)
+    private Date createdDate;
+
     public Friendship() {}
+
+    public Friendship(User user, User friend, FriendshipStatus status, Date createdDate) {
+        this.user = user;
+        this.friend = friend;
+        this.status = status;
+        this.createdDate = createdDate;
+    }
 
     public Long getId() {
         return id;
@@ -61,6 +75,14 @@ public class Friendship {
         this.status = status;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public String toString() {
         return "Friendship{" +
@@ -68,6 +90,7 @@ public class Friendship {
                 ", user=" + user +
                 ", friend=" + friend +
                 ", status=" + status +
+                ", createdDate=" + createdDate +
                 '}';
     }
 }

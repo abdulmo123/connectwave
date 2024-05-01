@@ -1,6 +1,5 @@
 package com.abdulmo123.connectwave.repository;
 
-import com.abdulmo123.connectwave.dto.FriendshipDto;
 import com.abdulmo123.connectwave.entity.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,13 +16,13 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     /*@Query(value = "select f.* from connectwave.friendship f where f.user_id = :userId", nativeQuery = true)
     List<Friendship> getFriendshipList(@Param("userId") Long userId);*/
 
-    @Query("SELECT f.id, f.user, f.friend, f.status FROM Friendship f WHERE f.user.id = :userId")
+    @Query("SELECT f.id, f.user, f.friend, f.status, f.createdDate FROM Friendship f WHERE f.user.id = :userId")
     List<Object[]> getFriendshipList(@Param("userId") Long userId);
 
 
     @Modifying
-    @Query(value = "insert into connectwave.friendship (status, user_id, friend_id) " +
-            "values ('PENDING', :userId, :friendId) " +
+    @Query(value = "insert into connectwave.friendship (status, user_id, friend_id, created_date) " +
+            "values ('PENDING', :userId, :friendId, current_timestamp) " +
 //            "('PENDING', :friendId, :userId) " +
             "on duplicate key update status = values(status)", nativeQuery = true)
     @Transactional
@@ -58,4 +57,13 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
             "OR (user_id = :friendId AND friend_id = :userId)", nativeQuery = true)
     @Transactional
     void removeExistingFriendship (@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    /*@Query("SELECT new com.abdulmo123.connectwave.dto.FriendshipDto " +
+            "(f.id, f.user, f.friend, f.status, f.createdDate) " +
+            "FROM Friendship f ORDER BY f.createdDate DESC")*/
+    @Query("SELECT f.id, f.user, f.friend, f.status, f.createdDate FROM Friendship f " +
+            "WHERE f.user.id = :userId AND f.friend.id = :friendId " +
+            "ORDER BY f.createdDate DESC " +
+            "LIMIT 1")
+    List<Object[]> getNewFriendshipRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
 }

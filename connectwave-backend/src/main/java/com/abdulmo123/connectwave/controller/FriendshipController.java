@@ -24,8 +24,8 @@ public class FriendshipController {
     }
 
     @PostMapping("/sendFriendshipRequest/{userId}/{friendId}")
-    private ResponseEntity<Friendship> sendFriendshipRequest(@PathVariable("userId") Long userId, @PathVariable("friendId") Long friendId) {
-        Friendship newFriendshipRequest = friendshipService.sendFriendshipRequest(userId, friendId);
+    private ResponseEntity<FriendshipDto> sendFriendshipRequest(@PathVariable("userId") Long userId, @PathVariable("friendId") Long friendId) {
+        FriendshipDto newFriendshipRequest = friendshipService.sendFriendshipRequest(userId, friendId);
         return new ResponseEntity<>(newFriendshipRequest, HttpStatus.CREATED);
     }
 

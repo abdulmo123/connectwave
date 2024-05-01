@@ -9,11 +9,13 @@ public interface FriendshipService {
 
     List<FriendshipDto> getUserFriendships(Long userId);
 
-    Friendship sendFriendshipRequest(Long userId, Long friendId);
+    FriendshipDto sendFriendshipRequest(Long userId, Long friendId);
 
     List<Friendship> existingFriendshipRequest(Long userId, Long friendId);
 
     Friendship respondToFriendshipRequest(Long userId, Long friendId, String action);
 
     void removeExistingFriendship(Long userId, Long friendId);
+
+    FriendshipDto getNewFriendshipRequest(Long userId, Long friendId);
 }

@@ -9,6 +9,7 @@ import com.abdulmo123.connectwave.repository.FriendshipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class FriendshipServiceImpl implements FriendshipService {
             User user = (User) obj[1];
             User friend = (User) obj[2];
             FriendshipStatus status = (FriendshipStatus) obj[3];
+            Date createdDate = (Date) obj[4];
 
             UserDto userDto = new UserDto(
                     user.getId(), user.getEmail(), user.getFirstName(),
@@ -39,7 +41,7 @@ public class FriendshipServiceImpl implements FriendshipService {
                     friend.getLastName(), friend.getGender(), friend.getBio()
             );
 
-            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, friendDto, status);
+            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, friendDto, status, createdDate);
             allFriendshipsInfo.add(friendshipDto);
         }
 
@@ -47,9 +49,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public Friendship sendFriendshipRequest(Long userId, Long friendId) {
+    public FriendshipDto sendFriendshipRequest(Long userId, Long friendId) {
         friendshipRepository.sendFriendshipRequest(userId, friendId);
-        return null;
+        return getNewFriendshipRequest(userId, friendId);
     }
 
     @Override
@@ -99,5 +101,34 @@ public class FriendshipServiceImpl implements FriendshipService {
         if (isFriend) {
             friendshipRepository.removeExistingFriendship(userId, friendId);
         }
+    }
+
+    @Override
+    public FriendshipDto getNewFriendshipRequest(Long userId, Long friendId) {
+        List<Object[]> results = friendshipRepository.getNewFriendshipRequest(userId, friendId);
+        List<FriendshipDto> allFriendshipsInfo = new ArrayList<>();
+
+        for (Object [] obj : results) {
+            Long id = (Long) obj[0];
+            User user = (User) obj[1];
+            User friend = (User) obj[2];
+            FriendshipStatus status = (FriendshipStatus) obj[3];
+            Date createdDate = (Date) obj[4];
+
+            UserDto userDto = new UserDto(
+                    user.getId(), user.getEmail(), user.getFirstName(),
+                    user.getLastName(), user.getGender(), user.getBio()
+            );
+
+            UserDto friendDto = new UserDto(
+                    friend.getId(), friend.getEmail(), friend.getFirstName(),
+                    friend.getLastName(), friend.getGender(), friend.getBio()
+            );
+
+            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, friendDto, status, createdDate);
+            allFriendshipsInfo.add(friendshipDto);
+        }
+
+        return allFriendshipsInfo.get(0);
     }
 }
