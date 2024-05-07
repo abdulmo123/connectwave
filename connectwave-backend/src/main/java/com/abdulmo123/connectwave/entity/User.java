@@ -56,8 +56,9 @@ public class User implements Serializable {
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
   private List<Post> userPosts = new ArrayList<>();
 
-  @JsonManagedReference
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+//  @JsonManagedReference
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "sender", cascade = CascadeType.ALL)
   private List<Friendship> friends;
 
   public User() {}

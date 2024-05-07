@@ -18,13 +18,13 @@ public class Friendship {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    private User sender;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friend_id", referencedColumnName = "id")
-    private User friend;
+    @JoinColumn(name = "receiver_id", referencedColumnName = "id")
+    private User receiver;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -36,9 +36,9 @@ public class Friendship {
 
     public Friendship() {}
 
-    public Friendship(User user, User friend, FriendshipStatus status, Date createdDate) {
-        this.user = user;
-        this.friend = friend;
+    public Friendship(User sender, User receiver, FriendshipStatus status, Date createdDate) {
+        this.sender = sender;
+        this.receiver = receiver;
         this.status = status;
         this.createdDate = createdDate;
     }
@@ -51,20 +51,20 @@ public class Friendship {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getSender() {
+        return sender;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
-    public User getFriend() {
-        return friend;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public void setFriend(User friend) {
-        this.friend = friend;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public FriendshipStatus getStatus() {
@@ -83,14 +83,14 @@ public class Friendship {
         this.createdDate = createdDate;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Friendship{" +
                 "id=" + id +
-                ", user=" + user +
-                ", friend=" + friend +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
                 ", status=" + status +
                 ", createdDate=" + createdDate +
                 '}';
-    }
+    }*/
 }

@@ -9,17 +9,24 @@ import java.sql.Date;
 @Data
 public class FriendshipDto implements Serializable {
     private Long id;
-    private UserDto user;
-    private UserDto friend;
+    private UserDto sender;
+    private UserDto receiver;
     private FriendshipStatus status;
     private Date createdDate;
 
     public FriendshipDto() {};
 
-    public FriendshipDto(Long id, UserDto user, UserDto friend, FriendshipStatus status, Date createdDate) {
+    public FriendshipDto(Long id, UserDto sender, UserDto receiver, FriendshipStatus status, Date createdDate) {
         this.id = id;
-        this.user = user;
-        this.friend = friend;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.status = status;
+        this.createdDate = createdDate;
+    }
+
+    public FriendshipDto(Long id, UserDto receiver, FriendshipStatus status, Date createdDate) {
+        this.id = id;
+        this.receiver = receiver;
         this.status = status;
         this.createdDate = createdDate;
     }

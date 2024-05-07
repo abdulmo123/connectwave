@@ -7,15 +7,19 @@ import java.util.List;
 
 public interface FriendshipService {
 
-    List<FriendshipDto> getUserFriendships(Long userId);
+    List<FriendshipDto> getUserFriendships(Long senderId);
 
-    FriendshipDto sendFriendshipRequest(Long userId, Long friendId);
+    FriendshipDto sendFriendshipRequest(Long senderId, Long receiverId);
 
-    List<Friendship> existingFriendshipRequest(Long userId, Long friendId);
+    Friendship existingFriendshipRequest(Long senderId, Long receiverId);
 
-    Friendship respondToFriendshipRequest(Long userId, Long friendId, String action);
+    Friendship respondToFriendshipRequest(Long senderId, Long receiverId, String action);
 
-    void removeExistingFriendship(Long userId, Long friendId);
+    void removeExistingFriendship(Long senderId, Long receiverId);
 
-    FriendshipDto getNewFriendshipRequest(Long userId, Long friendId);
+    FriendshipDto getNewFriendshipRequest(Long senderId, Long receiverId);
+
+    List<FriendshipDto> getPendingSentFriendshipRequests(Long senderId);
+
+    List<FriendshipDto> getPendingReceivedFriendRequests(Long receiverId);
 }

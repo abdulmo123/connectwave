@@ -13,57 +13,100 @@ import java.util.List;
 @Repository
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-    /*@Query(value = "select f.* from connectwave.friendship f where f.user_id = :userId", nativeQuery = true)
-    List<Friendship> getFriendshipList(@Param("userId") Long userId);*/
+    // query to list out all the friendships for a sender
+    @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
+            "FROM Friendship f " +
+            "WHERE f.sender.id = :senderId " +
+            "AND f.status = 'FRIEND'")
+    List<Object[]> getFriendshipList(@Param("senderId") Long senderId);
 
-    @Query("SELECT f.id, f.user, f.friend, f.status, f.createdDate FROM Friendship f WHERE f.user.id = :userId")
-    List<Object[]> getFriendshipList(@Param("userId") Long userId);
+
+    // query that gets all the existing friendship (status = 'FRIEND')
+    @Query(value = "SELECT f.* " +
+            "FROM connectwave.friendship f " +
+            "WHERE (f.sender_id = :senderId OR f.receiver_id = :receiverId) " +
+            "AND f.status = 'FRIEND'", nativeQuery = true)
+    List<Friendship> existingFriendship(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
 
+    // query for sending friend requests
     @Modifying
-    @Query(value = "insert into connectwave.friendship (status, user_id, friend_id, created_date) " +
-            "values ('PENDING', :userId, :friendId, current_timestamp) " +
-//            "('PENDING', :friendId, :userId) " +
+    @Query(value = "insert into connectwave.friendship (status, sender_id, receiver_id, created_date) " +
+            "values ('PENDING', :senderId, :receiverId, current_timestamp) " +
             "on duplicate key update status = values(status)", nativeQuery = true)
     @Transactional
-    void sendFriendshipRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    void sendFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
+
+    // query for getting existing friendship request
     @Query(value = "select f.* from connectwave.friendship f " +
-            "where (f.user_id = :userId AND f.friend_id = :friendId) " +
-            "OR (f.user_id = :friendId AND f.friend_id = :userId)", nativeQuery = true)
-    List<Friendship> exisitingFriendshipRequest(Long userId, Long friendId);
+            "where (f.sender_id = :senderId AND f.receiver_id = :receiverId) " +
+//            "OR (f.sender_id = :receiverId AND f.receiver_id = :senderId)) " +
+            "AND f.status = 'PENDING'", nativeQuery = true)
+    Friendship existingFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
-    // query for accepting friend request
+
+    // query to get status of friendship request after response
+    @Query(value = "select f.* from connectwave.friendship f " +
+            "where (f.sender_id = :senderId AND f.receiver_id = :receiverId) " +
+//            "OR (f.sender_id = :receiverId AND f.receiver_id = :senderId) " +
+            "AND (f.status = 'REJECTED' OR f.status = 'FRIEND')", nativeQuery = true)
+    Friendship friendshipRequestStatusAfterResponse(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+
+
+    // query for accepting friend request TODO: adjust query to allow receiver to ACCEPT
     @Modifying
     @Query(value = "UPDATE connectwave.friendship " +
             "SET status = 'FRIEND' " +
-            "WHERE (user_id = :userId AND friend_id = :friendId) " +
-            "OR (user_id = :friendId AND friend_id = :userId)", nativeQuery = true)
+            "WHERE (sender_id = :senderId AND receiver_id = :receiverId) "
+//            + "OR (sender_id = :receiverId AND receiver_id = :senderId)"
+            , nativeQuery = true)
     @Transactional
-    void acceptFriendshipRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    void acceptFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
-    // query for denying friend request
+
+    // query for denying friend request TODO: adjust query to allow receiver to REJECT
     @Modifying
     @Query(value = "UPDATE connectwave.friendship " +
             "SET status = 'REJECTED' " +
-            "WHERE (user_id = :userId AND friend_id = :friendId) " +
-            "OR (user_id = :friendId AND friend_id = :userId)", nativeQuery = true)
+            "WHERE (sender_id = :senderId AND receiver_id = :receiverId) "
+//            + "OR (sender_id = :receiverId AND receiver_id = :senderId)"
+            , nativeQuery = true)
     @Transactional
-    void rejectFriendshipRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    void rejectFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
+
+    // query for removing an existing friend
     @Modifying
     @Query(value = "DELETE from connectwave.friendship " +
-            "WHERE (user_id = :userId AND friend_id = :friendId) " +
-            "OR (user_id = :friendId AND friend_id = :userId)", nativeQuery = true)
+            "WHERE ((sender_id = :senderId AND receiver_id = :receiverId) " +
+            "OR (sender_id = :receiverId AND receiver_id = :senderId)) " +
+            "AND status = 'FRIEND'", nativeQuery = true)
     @Transactional
-    void removeExistingFriendship (@Param("userId") Long userId, @Param("friendId") Long friendId);
+    void removeExistingFriendship (@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
-    /*@Query("SELECT new com.abdulmo123.connectwave.dto.FriendshipDto " +
-            "(f.id, f.user, f.friend, f.status, f.createdDate) " +
-            "FROM Friendship f ORDER BY f.createdDate DESC")*/
-    @Query("SELECT f.id, f.user, f.friend, f.status, f.createdDate FROM Friendship f " +
-            "WHERE f.user.id = :userId AND f.friend.id = :friendId " +
+
+    // query for grabbing the latest friendship request after making one
+    @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate FROM Friendship f " +
+            "WHERE f.sender.id = :senderId AND f.receiver.id = :receiverId " +
+            "AND f.status = 'PENDING'" +
             "ORDER BY f.createdDate DESC " +
             "LIMIT 1")
-    List<Object[]> getNewFriendshipRequest(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    List<Object[]> getNewFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+
+
+    // query for getting sent pending (sender) friendship requests -> status PENDING
+    @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
+            "FROM Friendship f " +
+            "WHERE f.sender.id = :senderId " +
+            "AND f.status = 'PENDING'")
+    List<Object[]> getPendingSentFriendshipRequests(@Param("senderId") Long senderId);
+
+
+    // query for getting received (friend) friendship requests -> status PENDING
+    @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
+            "FROM Friendship f " +
+            "WHERE f.receiver.id = :receiverId " +
+            "AND f.status = 'PENDING'")
+    List<Object[]> getPendingReceivedFriendshipRequests(@Param("receiverId") Long receiverId);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -20,8 +21,8 @@ public class FriendshipServiceImpl implements FriendshipService {
     private FriendshipRepository friendshipRepository;
 
     @Override
-    public List<FriendshipDto> getUserFriendships(Long userId) {
-        List<Object[]> results = friendshipRepository.getFriendshipList(userId);
+    public List<FriendshipDto> getUserFriendships(Long senderId) {
+        List<Object[]> results = friendshipRepository.getFriendshipList(senderId);
         List<FriendshipDto> allFriendshipsInfo = new ArrayList<>();
 
         for (Object [] obj : results) {
@@ -49,63 +50,39 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public FriendshipDto sendFriendshipRequest(Long userId, Long friendId) {
-        friendshipRepository.sendFriendshipRequest(userId, friendId);
-        return getNewFriendshipRequest(userId, friendId);
+    public FriendshipDto sendFriendshipRequest(Long senderId, Long receiverId) {
+        friendshipRepository.sendFriendshipRequest(senderId, receiverId);
+        return getNewFriendshipRequest(senderId, receiverId);
     }
 
     @Override
-    public List<Friendship> existingFriendshipRequest(Long userId, Long friendId) {
-        return friendshipRepository.exisitingFriendshipRequest(userId, friendId);
+    public Friendship existingFriendshipRequest(Long senderId, Long receiverId) {
+        return friendshipRepository.existingFriendshipRequest(senderId, receiverId);
     }
 
     @Override
-    public Friendship respondToFriendshipRequest(Long userId, Long friendId, String action) {
-        List<Friendship> existingFriendshipRequest = friendshipRepository.exisitingFriendshipRequest(userId, friendId);
-        boolean doesExist = false;
-        for (int i = 0; i < existingFriendshipRequest.size(); i++) {
-            if (existingFriendshipRequest.get(i).getStatus().toString().equals("PENDING")) {
-                doesExist = true;
-            }
-            else {
-                doesExist = false;
-            }
-//            System.out.println("Index " + i + " : => " + existingFriendshipRequest.get(i).getStatus());
+    public Friendship respondToFriendshipRequest(Long senderId, Long receiverId, String action) {
+        // person receiving request responds to it, sender CAN'T respond to friend request they sent
+        Friendship existingFriendshipRequest = friendshipRepository.existingFriendshipRequest(senderId, receiverId);
+        if (action.equals("Accept")) {
+            friendshipRepository.acceptFriendshipRequest(senderId, receiverId);
         }
-        if (doesExist) {
-            if (action.equals("Accept")) {
-                friendshipRepository.acceptFriendshipRequest(userId, friendId);
-            }
-            else if (action.equals("Reject")){
-                friendshipRepository.rejectFriendshipRequest(userId, friendId);
-//                friendshipRepository.removeExistingFriendship(userId, friendId);
-            }
+        else if (action.equals("Reject")){
+            friendshipRepository.rejectFriendshipRequest(senderId, receiverId);
         }
-        return null;
+
+        return friendshipRepository.friendshipRequestStatusAfterResponse(senderId, receiverId);
     }
 
     @Override
-    public void removeExistingFriendship(Long userId, Long friendId) {
-        List<Friendship> existingFriendshipRequest = friendshipRepository.exisitingFriendshipRequest(userId, friendId);
-        boolean isFriend = false;
-        for (int i = 0; i < existingFriendshipRequest.size(); i++) {
-            if (existingFriendshipRequest.get(i).getStatus().toString().equals("FRIEND")) {
-                isFriend = true;
-            }
-            else {
-                isFriend = false;
-            }
-//            System.out.println("Index " + i + " : => " + existingFriendshipRequest.get(i).getStatus());
-        }
-
-        if (isFriend) {
-            friendshipRepository.removeExistingFriendship(userId, friendId);
-        }
+    public void removeExistingFriendship(Long senderId, Long receiverId) {
+        List<Friendship> existingFriendship = friendshipRepository.existingFriendship(senderId, receiverId);
+        friendshipRepository.removeExistingFriendship(senderId, receiverId);
     }
 
     @Override
-    public FriendshipDto getNewFriendshipRequest(Long userId, Long friendId) {
-        List<Object[]> results = friendshipRepository.getNewFriendshipRequest(userId, friendId);
+    public FriendshipDto getNewFriendshipRequest(Long senderId, Long receiverId) {
+        List<Object[]> results = friendshipRepository.getNewFriendshipRequest(senderId, receiverId);
         List<FriendshipDto> allFriendshipsInfo = new ArrayList<>();
 
         for (Object [] obj : results) {
@@ -130,5 +107,51 @@ public class FriendshipServiceImpl implements FriendshipService {
         }
 
         return allFriendshipsInfo.get(0);
+    }
+
+    @Override
+    public List<FriendshipDto> getPendingSentFriendshipRequests(Long senderId) {
+        List<Object[]> results = friendshipRepository.getPendingSentFriendshipRequests(senderId);
+        List<FriendshipDto> allPendingSentFriendshipRequests = new ArrayList<>();
+
+        for (Object [] obj : results) {
+            Long id = (Long) obj[0];
+            User friend = (User) obj[2];
+            FriendshipStatus status = (FriendshipStatus) obj[3];
+            Date createdDate = (Date) obj[4];
+
+            UserDto friendDto = new UserDto(
+                    friend.getId(), friend.getEmail(), friend.getFirstName(),
+                    friend.getLastName(), friend.getGender(), friend.getBio()
+            );
+
+            FriendshipDto friendshipDto = new FriendshipDto(id, null, friendDto, status, createdDate);
+            allPendingSentFriendshipRequests.add(friendshipDto);
+        }
+
+        return allPendingSentFriendshipRequests;
+    }
+
+    @Override
+    public List<FriendshipDto> getPendingReceivedFriendRequests(Long receiverId) {
+        List<Object[]> results = friendshipRepository.getPendingReceivedFriendshipRequests(receiverId);
+        List<FriendshipDto> allPendingReceivedFriendshipRequests = new ArrayList<>();
+
+        for (Object [] obj : results) {
+            Long id = (Long) obj[0];
+            User user = (User) obj[1];
+            FriendshipStatus status = (FriendshipStatus) obj[3];
+            Date createdDate = (Date) obj[4];
+
+            UserDto userDto = new UserDto(
+                    user.getId(), user.getEmail(), user.getFirstName(),
+                    user.getLastName(), user.getGender(), user.getBio()
+            );
+
+            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, null, status, createdDate);
+            allPendingReceivedFriendshipRequests.add(friendshipDto);
+        }
+
+        return allPendingReceivedFriendshipRequests;
     }
 }
