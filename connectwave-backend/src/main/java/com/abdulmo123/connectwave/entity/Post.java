@@ -1,6 +1,9 @@
 package com.abdulmo123.connectwave.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -11,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name="post")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Post implements Serializable {
 
     @Id
@@ -25,7 +29,8 @@ public class Post implements Serializable {
     @Column(name="created_date", nullable=false, updatable=false)
     private Date createdDate;
 
-    @JsonBackReference
+//    @JsonBackReference(value = "post-user")
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;

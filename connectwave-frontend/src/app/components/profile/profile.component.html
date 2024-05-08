@@ -19,6 +19,7 @@
 </div>
 
 
+<!-- PROFILE SECTION -->
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -44,30 +45,44 @@
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5">{{userInfo?.firstName + " " + userInfo?.lastName}}</h4>
                       <!-- <p class="m-b-10">Web And Frontend Developer</p> -->
-                      <a href="#" class="btn btn-xs btn-success">Edit Profile</a>
+                      <div *ngIf="currentUser && userInfo && currentUser.id !== userInfo.id; else elseBlock"><a
+                          (click)="onAddFriend()" class="btn btn-xs btn-success">Add Friend</a></div>
+                      <ng-template #elseBlock><a (click)="onEditProfile()" class="btn btn-primary">Edit
+                          Profile</a></ng-template>
                     </div>
                     <!-- END profile-header-info -->
                   </div>
                   <!-- END profile-header-content -->
                   <!-- BEGIN profile-header-tab -->
                   <ul class="profile-header-tab nav nav-tabs">
-                    <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-with-timeline-posts"
-                        target="__blank" class="nav-link_">POSTS</a></li>
-                    <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-about"
-                        target="__blank" class="nav-link_ active show">ABOUT</a></li>
-                    <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-photos" target="__blank"
-                        class="nav-link_">PHOTOS</a></li>
-                    <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-videos" target="__blank"
-                        class="nav-link_">VIDEOS</a></li>
-                    <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list"
-                        target="__blank" class="nav-link_">FRIENDS</a></li>
+                    <li class="nav-item">
+                      <a style="cursor:pointer" (click)="navToAboutTab()" target="__blank" class="nav-link_"
+                        [ngClass]="{'nav-link_ active show': selectedTab === 'About'}">ABOUT</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="cursor:pointer" (click)="navToPostsTab()" target="__blank" class="nav-link_"
+                        [ngClass]="{'nav-link_ active show': selectedTab === 'Posts'}">POSTS</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="cursor:pointer" (click)="navToLikesTab()" target="__blank" class="nav-link_"
+                        [ngClass]="{'nav-link_ active show': selectedTab === 'Likes'}">LIKES</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="cursor:pointer" (click)="navToCommentsTab()" target="__blank" class="nav-link_"
+                        [ngClass]="{'nav-link_ active show': selectedTab === 'Comments'}">COMMENTS</a>
+                    </li>
+                    <li class="nav-item">
+                      <a style="cursor:pointer" (click)="navToFriendsTab()"
+                        href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list" target="__blank"
+                        class="nav-link_" [ngClass]="{'nav-link_ active show': selectedTab === 'Friends'}">FRIENDS</a>
+                    </li>
                   </ul>
                   <!-- END profile-header-tab -->
                 </div>
               </div>
               <!-- end profile -->
-              <!-- begin profile-content -->
-              <div class="profile-content">
+              <!-- begin ABOUT-content -->
+              <div *ngIf="this.selectedTab === 'About'" class="profile-content">
                 <!-- begin tab-content -->
                 <div class="tab-content p-0">
 
@@ -123,11 +138,152 @@
                 </div>
                 <!-- end tab-content -->
               </div>
-              <!-- end profile-content -->
+              <!-- end ABOUT-content -->
+              <!-- begin POSTS-content -->
+              <div *ngIf="this.selectedTab === 'Posts'" id="main-content" class="blog-page">
+                <div class="row clearfix">
+                  <div class="container">
+                    <div class="col-lg-8 col-md-12 left-box">
+                      <div *ngFor="let post of userPosts" class="card single_post">
+                        <div class="body">
+                          <div class="img-post">
+                            <a style="cursor:pointer" class="pull-left">
+                              <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                            </a>
+                          </div>
+                          <div class="publisher-info">
+                            <h5 style="cursor: pointer"><a>{{
+                                userInfo?.firstName + " " + userInfo?.lastName}}</a></h5>
+                          </div>
+                          <p>{{ post?.content }}</p>
+                        </div>
+                        <div class="footer">
+                          <div class="actions">
+                            <!-- <a href="javascript:void(0);" class="btn btn-outline-secondary">Continue Reading</a> -->
+                          </div>
+                          <ul class="stats">
+                            <li class=""><a>{{ post.formattedDate }}</a></li>
+                            <li>
+                              <a href="javascript:void(0);" class="fa fa-heart"
+                                [style.color]="post.isLikedChk ? 'red' : 'black'">
+                                {{post.numOfLikes}}
+                              </a>
+                            </li>
+                            <li><a href="javascript:void(0);" [style.color]="'black'" class="fa fa-comment">
+                                {{post.numOfComments}}
+                              </a></li>
+                          </ul>
+                          <div class="container">
+                            <div class="row bootstrap snippets bootdeys" style="width: 70em">
+                              <div class="col-md-8 col-sm-12">
+                                <div class="comment-wrapper">
+                                  <div class="panel panel-info">
+                                    <div class="panel-body" style="margin-bottom: -20px;">
+                                      <div class="clearfix" style="margin: -15px"></div>
+                                      <hr>
+                                      <ul class="media-list" style="margin-top: -15px">
+                                        <li *ngFor="let comment of post.postComments; index as i" class="media">
+                                          <a style="cursor:pointer" class="pull-left">
+                                            <img style="width: 40px !important; height: 40px !important;"
+                                              src="https://bootdey.com/img/Content/user_2.jpg" alt=""
+                                              class="img-circle">
+                                          </a>
+                                          <div class="media-body">
+                                            <span class="text-muted pull-right">
+                                              <small class="text-muted">{{comment.formattedDate}}</small>
+                                            </span>
+                                            <strong style="cursor: pointer"
+                                              class="text-success">{{comment.publisherName}}</strong>
+                                            <p *ngIf="post.postComments !== null">
+                                              {{comment.content}}
+                                            </p>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end POSTS-content -->
+                  </div>
+                </div>
+              </div>
+              <!-- begin LIKES-content -->
+              <div *ngIf="this.selectedTab === 'Likes'" id="main-content" class="blog-page">
+                <div class="row clearfix">
+                  <div class="container">
+                    <div class="col-lg-8 col-md-12 left-box">
+                      <div *ngFor="let post of userLikes" class="card single_post">
+                        <div class="body">
+                          <div class="img-post">
+                            <a style="cursor:pointer" class="pull-left">
+                              <img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                            </a>
+                          </div>
+                          <div class="publisher-info">
+                            <h5 style="cursor: pointer"><a>{{
+                                userInfo?.firstName + " " + userInfo?.lastName}}</a></h5>
+                          </div>
+                          <p>{{ post?.content }}</p>
+                        </div>
+                        <div class="footer">
+                          <div class="actions">
+                            <!-- <a href="javascript:void(0);" class="btn btn-outline-secondary">Continue Reading</a> -->
+                          </div>
+                          <ul class="stats">
+                            <li class=""><a>{{ post.formattedDate }}</a></li>
+                            <li>
+                              <a href="javascript:void(0);" class="fa fa-heart"
+                                [style.color]="post.isLikedChk ? 'red' : 'black'">
+                                {{post.numOfLikes}}
+                              </a>
+                            </li>
+                            <li><a href="javascript:void(0);" [style.color]="'black'" class="fa fa-comment">
+                                {{post.numOfComments}}
+                              </a></li>
+                          </ul>
+                          <!-- <div class="container">
+                      <div class="row bootstrap snippets bootdeys" style="width: 70em">
+                        <div class="col-md-8 col-sm-12">
+                          <div class="comment-wrapper">
+                            <div class="panel panel-info">
+                              <div class="panel-body" style="margin-bottom: -20px;">
+                                <div class="clearfix" style="margin: -15px"></div>
+                                <hr>
+                                <ul class="media-list" style="margin-top: -15px">
+                                  <li *ngFor="let comment of post.postComments; index as i" class="media">
+                                    <a style="cursor:pointer" class="pull-left">
+                                      <img style="width: 40px !important; height: 40px !important;"
+                                        src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+                                    </a>
+                                    <div class="media-body">
+                                      <span class="text-muted pull-right">
+                                        <small class="text-muted">{{comment.formattedDate}}</small>
+                                      </span>
+                                      <strong style="cursor: pointer"
+                                        class="text-success">{{comment.publisherName}}</strong>
+                                      <p *ngIf="post.postComments !== null">
+                                        {{comment.content}}
+                                      </p>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end LIKES-content -->
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

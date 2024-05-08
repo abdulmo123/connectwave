@@ -8,9 +8,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
-import { AboutComponent } from './components/profile/about/about.component';
-import { PostsComponent } from './components/profile/posts/posts.component';
-import { LikesComponent } from './components/profile/likes/likes.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +16,7 @@ import { LikesComponent } from './components/profile/likes/likes.component';
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    AboutComponent,
-    PostsComponent,
-    LikesComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
