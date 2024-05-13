@@ -14,11 +14,12 @@ import java.util.List;
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     // query to list out all the friendships for a sender
-    @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
+    /*@Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
             "FROM Friendship f " +
-            "WHERE f.sender.id = :senderId " +
+            "WHERE (f.sender.id = :senderId OR " +
+            "f.receiver.id = :senderId) " +
             "AND f.status = 'FRIEND'")
-    List<Object[]> getFriendshipList(@Param("senderId") Long senderId);
+    List<Object[]> getFriendshipList(@Param("senderId") Long senderId);*/
 
 
     // query that gets all the existing friendship (status = 'FRIEND')
@@ -95,18 +96,18 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     List<Object[]> getNewFriendshipRequest(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
 
-    // query for getting sent pending (sender) friendship requests -> status PENDING
+    /*// query for getting sent pending (sender) friendship requests -> status PENDING
     @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
             "FROM Friendship f " +
             "WHERE f.sender.id = :senderId " +
             "AND f.status = 'PENDING'")
-    List<Object[]> getPendingSentFriendshipRequests(@Param("senderId") Long senderId);
+    List<Object[]> getPendingSentFriendshipRequests(@Param("senderId") Long senderId);*/
 
 
-    // query for getting received (friend) friendship requests -> status PENDING
+    /*// query for getting received (friend) friendship requests -> status PENDING
     @Query("SELECT f.id, f.sender, f.receiver, f.status, f.createdDate " +
             "FROM Friendship f " +
             "WHERE f.receiver.id = :receiverId " +
             "AND f.status = 'PENDING'")
-    List<Object[]> getPendingReceivedFriendshipRequests(@Param("receiverId") Long receiverId);
+    List<Object[]> getPendingReceivedFriendshipRequests(@Param("receiverId") Long receiverId);*/
 }

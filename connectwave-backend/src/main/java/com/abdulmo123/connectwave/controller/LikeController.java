@@ -20,13 +20,13 @@ public class LikeController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/getAllLikesByUser/{userId}")
+    @GetMapping("/{userId}/getAllLikesByUser")
     public ResponseEntity<List<Post>> getAllLikesByUser(@PathVariable ("userId") Long userId) {
         List<Post> allLikesByUser = likeService.getAllLikesByUser(userId);
         return new ResponseEntity<>(allLikesByUser, HttpStatus.OK);
     }
 
-    @PostMapping("/saveLikeStatus/{userId}/{postId}/{isLiked}")
+    @PostMapping("/{userId}/{postId}/{isLiked}/saveLikeStatus")
     public ResponseEntity<Post> saveLikeStatus(@PathVariable ("userId") Long userId, @PathVariable("postId") Long postId, @PathVariable("isLiked") String isLiked) throws Exception {
         try {
             Post post = likeService.saveLikeStatus(userId, postId, isLiked);
@@ -38,9 +38,9 @@ public class LikeController {
         }
     }
 
-    @GetMapping("/getNumLikesForPost/{postId}")
+    /*@GetMapping("/getNumLikesForPost/{postId}")
     public ResponseEntity<Integer> numLikesForPost(@PathVariable("postId") Long postId) {
         int numLikesForPost = likeService.numLikesForPost(postId);
         return new ResponseEntity<>(numLikesForPost, HttpStatus.OK);
-    }
+    }*/
 }

@@ -63,4 +63,16 @@ public class UserService implements UserDetailsService {
     public UserDto findUserByPostId(Long postId) {
         return userRepository.findUserByPostId(postId);
     }
+
+    public List<User> getUserFriendships(Long userId) {
+        return userRepository.getUserFriendships(userId);
+    }
+
+    public List<UserDto> getPendingSentFriendshipRequests(Long userId) {
+        return userRepository.getPendingSentFriendshipRequests(userId);
+    }
+
+    public List<UserDto> getPendingReceivedFriendshipRequests(Long userId) {
+        return userRepository.getPendingReceivedFriendshipRequests(userId);
+    }
 }

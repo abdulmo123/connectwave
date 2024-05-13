@@ -6,6 +6,7 @@ import com.abdulmo123.connectwave.entity.Friendship;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.enums.FriendshipStatus;
 import com.abdulmo123.connectwave.repository.FriendshipRepository;
+import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FriendshipServiceImpl implements FriendshipService {
@@ -20,7 +22,10 @@ public class FriendshipServiceImpl implements FriendshipService {
     @Autowired
     private FriendshipRepository friendshipRepository;
 
-    @Override
+    @Autowired
+    private UserRepository userRepository;
+
+    /*@Override
     public List<FriendshipDto> getUserFriendships(Long senderId) {
         List<Object[]> results = friendshipRepository.getFriendshipList(senderId);
         List<FriendshipDto> allFriendshipsInfo = new ArrayList<>();
@@ -41,13 +46,27 @@ public class FriendshipServiceImpl implements FriendshipService {
                     friend.getId(), friend.getEmail(), friend.getFirstName(),
                     friend.getLastName(), friend.getGender(), friend.getBio()
             );
+            FriendshipDto friendshipDto = new FriendshipDto();
+            if (Objects.equals(user.getId(), senderId)) {
+                friendshipDto.setId(id);
+                friendshipDto.setReceiver(friendDto);
+                friendshipDto.setStatus(status);
+                friendshipDto.setCreatedDate(createdDate);
+            }
 
-            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, friendDto, status, createdDate);
+            else if (Objects.equals(friend.getId(), senderId)) {
+                friendshipDto.setId(id);
+                friendshipDto.setSender(userDto);
+                friendshipDto.setStatus(status);
+                friendshipDto.setCreatedDate(createdDate);
+            }
+
+//            FriendshipDto friendshipDto = new FriendshipDto(id, userDto, friendDto, status, createdDate);
             allFriendshipsInfo.add(friendshipDto);
         }
 
         return allFriendshipsInfo;
-    }
+    }*/
 
     @Override
     public FriendshipDto sendFriendshipRequest(Long senderId, Long receiverId) {
@@ -109,7 +128,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         return allFriendshipsInfo.get(0);
     }
 
-    @Override
+    /*@Override
     public List<FriendshipDto> getPendingSentFriendshipRequests(Long senderId) {
         List<Object[]> results = friendshipRepository.getPendingSentFriendshipRequests(senderId);
         List<FriendshipDto> allPendingSentFriendshipRequests = new ArrayList<>();
@@ -153,5 +172,5 @@ public class FriendshipServiceImpl implements FriendshipService {
         }
 
         return allPendingReceivedFriendshipRequests;
-    }
+    }*/
 }

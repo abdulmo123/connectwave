@@ -56,8 +56,8 @@ public class CommentServiceImpl implements CommentService {
         return null;
     }
 
-    @Override
+    /*@Override
     public int numCommentsForPost(Long postId) {
         return commentRepository.numCommentsForPost(postId);
-    }
+    }*/
 }

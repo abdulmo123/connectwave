@@ -34,4 +34,22 @@ public class UserController {
         UserDto user = userService.findUserByPostId(postId);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/getUserFriendships")
+    public ResponseEntity<List<User>> getUserFriendships(@PathVariable("userId") Long userId) {
+        List<User> userFriendships = userService.getUserFriendships(userId);
+        return new ResponseEntity<>(userFriendships, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/getPendingSentFriendshipRequests")
+    public ResponseEntity<List<UserDto>> getPendingSentFriendshipRequests(@PathVariable("userId") Long userId) {
+        List<UserDto> pendingSentFriendshipRequests = userService.getPendingSentFriendshipRequests(userId);
+        return new ResponseEntity<>(pendingSentFriendshipRequests, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/getPendingReceivedFriendshipRequests")
+    public ResponseEntity<List<UserDto>> getPendingReceivedFriendshipRequests(@PathVariable("userId") Long userId) {
+        List<UserDto> pendingReceivedFriendshipRequests = userService.getPendingReceivedFriendshipRequests(userId);
+        return new ResponseEntity<>(pendingReceivedFriendshipRequests, HttpStatus.OK);
+    }
 }
