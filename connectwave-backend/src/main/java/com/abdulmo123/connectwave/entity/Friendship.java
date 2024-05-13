@@ -83,14 +83,4 @@ public class Friendship {
         this.createdDate = createdDate;
     }
 
-    /*@Override
-    public String toString() {
-        return "Friendship{" +
-                "id=" + id +
-                ", sender=" + sender +
-                ", receiver=" + receiver +
-                ", status=" + status +
-                ", createdDate=" + createdDate +
-                '}';
-    }*/
 }

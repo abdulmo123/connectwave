@@ -8,6 +8,7 @@ import com.abdulmo123.connectwave.entity.Post;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
 import com.abdulmo123.connectwave.repository.CommentRepository;
+import com.abdulmo123.connectwave.repository.LikeRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Override
     public Post createUserPost(Long userId, Post post) {
@@ -70,6 +74,9 @@ public class PostServiceImpl implements PostService {
 
             List<Comment> comments = commentRepository.getAllCommentsForPost(post.getId());
 
+            int numLikes = likeRepository.numLikesForPost(post.getId());
+            int numComments = commentRepository.numCommentsForPost(post.getId());
+
             List<CommentDto> commentDtos = comments.stream()
                     .map(comment -> new CommentDto(
                             comment.getId(),
@@ -93,7 +100,7 @@ public class PostServiceImpl implements PostService {
 
             PostDto postDto = new PostDto(
                     post.getId(), post.getContent(),
-                    post.getCreatedDate(), userDto, commentDtos
+                    post.getCreatedDate(), userDto, commentDtos, numLikes, numComments
             );
 
             allPostsInfo.add(postDto);

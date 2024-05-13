@@ -17,7 +17,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/createUserPost/{userId}")
+    @PostMapping("/{userId}/createUserPost")
     public ResponseEntity<Post> createUserPost(@PathVariable("userId") Long userId, @RequestBody Post post) {
         Post newPost = postService.createUserPost(userId, post);
         return new ResponseEntity<>(newPost, HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class PostController {
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}/getUserPosts")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable("userId") Long userId) {
         List<Post> allPostsByUser = postService.getAllPostsByUser(userId);
         return new ResponseEntity<>(allPostsByUser, HttpStatus.OK);

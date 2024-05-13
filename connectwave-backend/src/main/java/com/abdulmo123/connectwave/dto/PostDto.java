@@ -13,12 +13,16 @@ public class PostDto implements Serializable {
     private Date createdDate;
     private UserDto user;
     private List<CommentDto> postComments;
+    private int numLikes;
+    private int numComments;
 
-    public PostDto(Long id, String content, Date createdDate, UserDto user, List<CommentDto> postComments) {
+    public PostDto(Long id, String content, Date createdDate, UserDto user, List<CommentDto> postComments, int numLikes, int numComments) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
         this.user = user;
         this.postComments = postComments;
+        this.numLikes = numLikes;
+        this.numComments = numComments;
     }
 }

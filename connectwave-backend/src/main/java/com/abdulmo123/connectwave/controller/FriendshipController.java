@@ -17,25 +17,30 @@ public class FriendshipController {
     @Autowired
     private FriendshipService friendshipService;
 
-    @GetMapping("/getUserFriendships/{senderId}")
+    /*@GetMapping("/getUserFriendships/{senderId}")
     private ResponseEntity<List<FriendshipDto>> getUserFriendship(@PathVariable("senderId") Long senderId) {
         List<FriendshipDto> userFriendships = friendshipService.getUserFriendships(senderId);
         return new ResponseEntity<>(userFriendships, HttpStatus.OK);
-    }
+    }*/
 
-    @PostMapping("/sendFriendshipRequest/{senderId}/{receiverId}")
+    @PostMapping("/{senderId}/{receiverId}/sendFriendshipRequest")
     private ResponseEntity<FriendshipDto> sendFriendshipRequest(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         FriendshipDto newFriendshipRequest = friendshipService.sendFriendshipRequest(senderId, receiverId);
         return new ResponseEntity<>(newFriendshipRequest, HttpStatus.CREATED);
     }
 
-    @GetMapping("/existingFriendshipRequest/{senderId}/{receiverId}")
+    @GetMapping("/{senderId}/{receiverId}/existingFriendshipRequest")
     private ResponseEntity<Friendship> existingFriendshipRequest(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         Friendship existingFriendshipRequest = friendshipService.existingFriendshipRequest(senderId, receiverId);
         return new ResponseEntity<>(existingFriendshipRequest, HttpStatus.OK);
     }
 
-    @PostMapping("/respondToFriendshipRequest/{action}/{senderId}/{receiverId}")
+    @DeleteMapping("/{senderId}/{receiverId}/cancelSentFriendshipRequest")
+    private void cancelSentFriendshipRequest(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+        friendshipService.cancelSentFriendshipRequest(senderId, receiverId);
+    }
+
+    @PostMapping("/{senderId}/{receiverId}/{action}/respondToFriendshipRequest")
     private ResponseEntity<Friendship> responseToFriendshipRequest(@PathVariable("action") String action,
                                                                    @PathVariable("senderId") Long senderId,
                                                                    @PathVariable("receiverId") Long receiverId) {
@@ -44,20 +49,20 @@ public class FriendshipController {
         return new ResponseEntity<>(responseToFriendshipRequest, HttpStatus.OK);
     }
 
-    @DeleteMapping("/removeExistingFriend/{senderId}/{receiverId}")
+    @DeleteMapping("/{senderId}/{receiverId}/removeExistingFriend")
     private void removeExistingFriend(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         friendshipService.removeExistingFriendship(senderId, receiverId);
     }
 
-    @GetMapping("/getPendingSentFriendshipRequests/{senderId}")
+    /*@GetMapping("/{senderId}/getPendingSentFriendshipRequests")
     public ResponseEntity<List<FriendshipDto>> getPendingSentFriendshipRequests(@PathVariable("senderId") Long senderId) {
         List<FriendshipDto> allPendingSentFriendshipRequests = friendshipService.getPendingSentFriendshipRequests(senderId);
         return new ResponseEntity<>(allPendingSentFriendshipRequests, HttpStatus.OK);
     }
 
-    @GetMapping("/getPendingReceivedFriendshipRequests/{receiverId}")
+    @GetMapping("/{receiverId}/getPendingReceivedFriendshipRequests")
     public ResponseEntity<List<FriendshipDto>> getPendingReceivedFriendshipRequests(@PathVariable("receiverId") Long receiverId) {
         List<FriendshipDto> allPendingReceivedFriendshipRequests = friendshipService.getPendingReceivedFriendRequests(receiverId);
         return new ResponseEntity<>(allPendingReceivedFriendshipRequests, HttpStatus.OK);
-    }
+    }*/
 }

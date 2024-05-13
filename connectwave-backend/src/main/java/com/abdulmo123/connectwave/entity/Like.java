@@ -25,9 +25,6 @@ public class Like {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    /*@ManyToOne
-    @JoinColumn(name = "comment_id")
-    private Comment comment;*/
 
     public Like() {}
 

@@ -8,9 +8,18 @@
     <a style="cursor: pointer" (click)="navToHome()" class="navbar-brand">Home</a>
     <form class="d-flex" role="search">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <div type="button" class="btn btn-light">
-        <a><span class="glyphicon glyphicon-log-out"></span></a>
-      </div>
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill"
+        viewBox="0 0 16 16">
+        <path
+          d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+      </svg> -->
+      <!-- <i class="bi bi-bell-fill"></i> -->
+      <button style="margin-right: 0.3em" type="button" class="btn btn-light">
+        <a><span class="glyphicon glyphicon-inbox"></span></a>
+      </button>
+      <button type="button" class="btn btn-light">
+        <a (click)="handleLogout()"><span class="glyphicon glyphicon-log-out"></span></a>
+      </button>
     </form>
   </div>
 </nav>
@@ -45,8 +54,14 @@
                     <div class="profile-header-info">
                       <h4 class="m-t-10 m-b-5">{{userInfo?.firstName + " " + userInfo?.lastName}}</h4>
                       <!-- <p class="m-b-10">Web And Frontend Developer</p> -->
-                      <div *ngIf="currentUser && userInfo && currentUser.id !== userInfo.id; else elseBlock"><a
-                          (click)="onAddFriend()" class="btn btn-xs btn-success">Add Friend</a></div>
+                      <div *ngIf="currentUser && userInfo && currentUser.id !== userInfo.id; else elseBlock">
+                        <div *ngIf="friendship === null; else friendshipRequestExists"><a (click)="onAddFriend()"
+                            class="btn btn-xs btn-success">Add Friend</a></div>
+                        <ng-template #friendshipRequestExists>
+                          <a (click)="onCancelSentFriendshipRequest()" class="btn btn-xs btn-danger">Cancel Sent
+                            Request</a>
+                        </ng-template>
+                      </div>
                       <ng-template #elseBlock><a (click)="onEditProfile()" class="btn btn-primary">Edit
                           Profile</a></ng-template>
                     </div>
@@ -72,9 +87,8 @@
                         [ngClass]="{'nav-link_ active show': selectedTab === 'Comments'}">COMMENTS</a>
                     </li>
                     <li class="nav-item">
-                      <a style="cursor:pointer" (click)="navToFriendsTab()"
-                        href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list" target="__blank"
-                        class="nav-link_" [ngClass]="{'nav-link_ active show': selectedTab === 'Friends'}">FRIENDS</a>
+                      <a style="cursor:pointer" (click)="navToFriendsTab()" target="__blank" class="nav-link_"
+                        [ngClass]="{'nav-link_ active show': selectedTab === 'Friends'}">FRIENDS</a>
                     </li>
                   </ul>
                   <!-- END profile-header-tab -->
@@ -166,11 +180,11 @@
                             <li>
                               <a href="javascript:void(0);" class="fa fa-heart"
                                 [style.color]="post.isLikedChk ? 'red' : 'black'">
-                                {{post.numOfLikes}}
+                                {{post.numLikes}}
                               </a>
                             </li>
                             <li><a href="javascript:void(0);" [style.color]="'black'" class="fa fa-comment">
-                                {{post.numOfComments}}
+                                {{post.numComments}}
                               </a></li>
                           </ul>
                           <div class="container">
@@ -240,11 +254,11 @@
                             <li>
                               <a href="javascript:void(0);" class="fa fa-heart"
                                 [style.color]="post.isLikedChk ? 'red' : 'black'">
-                                {{post.numOfLikes}}
+                                {{post.numLikes}}
                               </a>
                             </li>
                             <li><a href="javascript:void(0);" [style.color]="'black'" class="fa fa-comment">
-                                {{post.numOfComments}}
+                                {{post.numComments}}
                               </a></li>
                           </ul>
                           <!-- <div class="container">
@@ -286,4 +300,81 @@
                   </div>
                 </div>
               </div>
+              <!-- begin COMMENTS-content -->
+              <!-- end COMMENTS-content -->
+              <!-- begin FREINDS-content -->
+              <div *ngIf="this.selectedTab === 'Friends'" class="profile-content">
+                <!-- begin tab-content -->
+                <div class="tab-content p-0">
+                  <!-- begin #profile-friends tab -->
+                  <div class="tab-pane fade in active show" id="profile-friends">
+                    <h4 class="m-t-0 m-b-20">Friend List (14)</h4>
+                    <!-- begin row -->
+                    <div class="row row-space-2">
+                      <!-- begin col-6 -->
+                      <div class="col-md-6 m-b-2">
+                        <div class="p-10 bg-white">
+                          <div class="media media-xs overflow-visible">
+                            <a class="media-left" href="javascript:;">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
+                                class="media-object img-circle">
+                            </a>
+                            <div class="media-body valign-middle">
+                              <b class="text-inverse">James Pittman</b>
+                            </div>
+                            <div class="media-body valign-middle text-right overflow-visible">
+                              <div class="btn-group dropdown">
+                                <a href="javascript:;" class="btn btn-default">Friends</a>
+                                <a href="javascript:;" data-toggle="dropdown" class="btn btn-default dropdown-toggle"
+                                  aria-expanded="false"></a>
+                                <ul class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
+                                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
+                                  <li><a href="javascript:;">Action 1</a></li>
+                                  <li><a href="javascript:;">Action 2</a></li>
+                                  <li><a href="javascript:;">Action 3</a></li>
+                                  <li class="divider"></li>
+                                  <li><a href="javascript:;">Action 4</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                      <!-- begin col-6 -->
+                      <!-- end col-6 -->
+                    </div>
+                    <!-- end row -->
+                  </div>
+                  <!-- end #profile-friends tab -->
+                </div>
+                <!-- end tab-content -->
+              </div>
+              <!-- end FRIENDS-content -->
             </div>

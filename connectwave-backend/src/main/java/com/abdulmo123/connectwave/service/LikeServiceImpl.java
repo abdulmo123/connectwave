@@ -22,12 +22,6 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     private PostRepository postRepository;
 
-    /*public LikeService(LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository) {
-        this.likeRepository = likeRepository;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-    }*/
-
     @Override
     public List<Post> getAllLikesByUser (Long userId) {
         return postRepository.getPostsLikedByUser(userId);
@@ -48,10 +42,5 @@ public class LikeServiceImpl implements LikeService {
             throw new IllegalArgumentException("Invalid value for isLiked: " + isLiked);
         }
         return null;
-    }
-
-    @Override
-    public int numLikesForPost(Long postId) {
-        return likeRepository.numLikesForPost(postId);
     }
 }

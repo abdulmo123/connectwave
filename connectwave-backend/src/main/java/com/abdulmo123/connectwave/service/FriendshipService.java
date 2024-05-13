@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface FriendshipService {
 
-    List<FriendshipDto> getUserFriendships(Long senderId);
-
     FriendshipDto sendFriendshipRequest(Long senderId, Long receiverId);
 
     Friendship existingFriendshipRequest(Long senderId, Long receiverId);
+
+    void cancelSentFriendshipRequest(Long senderId, Long receiverId);
 
     Friendship respondToFriendshipRequest(Long senderId, Long receiverId, String action);
 
@@ -19,7 +19,4 @@ public interface FriendshipService {
 
     FriendshipDto getNewFriendshipRequest(Long senderId, Long receiverId);
 
-    List<FriendshipDto> getPendingSentFriendshipRequests(Long senderId);
-
-    List<FriendshipDto> getPendingReceivedFriendRequests(Long receiverId);
 }
