@@ -57,32 +57,13 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // getUserFriendships() {
-  //   let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
-  //   this.userProfileId = +tempid!;
-
-  //   this.profileService.getUserFriendships(this.userProfileId!).subscribe(
-  //     (response: Friendship[]) => {
-  //       this.userFriendships = response;
-  //       console.log('user friendships =>', this.userFriendships);
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       alert(error.message);
-  //     }
-  //   )
-  // }
-
   getUserProfileInfo() {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    // this.currentUser = JSON.parse(window.localStorage.getItem("currentUser") || '{}');
-    // console.log('current logged in user! => ', this.currentUser);
-
     this.profileService.getUserProfileInfo(this.userProfileId!).subscribe(
       (response: User) => {
         this.userInfo = response;
-        // this.profileNavService.setUserProfileInfo(this.userInfo!);
         console.log(' user profile info => ', this.userInfo);
       },
       (error: HttpErrorResponse) => {
@@ -96,30 +77,6 @@ export class ProfileComponent implements OnInit {
     localStorage.removeItem('userProfileId');
   }
 
-  // getAllUserPosts() {
-  //   this.postService.getAllPostsByUser(this.userProfileId!).subscribe(
-  //     (response: Post[]) => {
-  //       this.userPosts = response;
-  //       console.log('user posts =>', this.userPosts);
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       alert(error.message);
-  //     }
-  //   )
-  // }
-
-  // getAllLikesByUser() {
-  //   this.likeService.getAllLikesByUser(this.userProfileId!).subscribe(
-  //     (response: Post[]) => {
-  //       this.userLikes = response;
-  //       console.log('user liked posts =>', this.userLikes);
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       alert(error.message);
-  //     }
-  //   )
-  // }
-
   navToPostsTab() {
     this.selectedTab = 'Posts';
     console.log('selected posts tab ! =>', this.selectedTab);
@@ -132,7 +89,6 @@ export class ProfileComponent implements OnInit {
         alert(error.message);
       }
     )
-    // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
   navToLikesTab() {
@@ -147,19 +103,16 @@ export class ProfileComponent implements OnInit {
         alert(error.message);
       }
     )
-    // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
   navToCommentsTab() {
     this.selectedTab = 'Comments';
     console.log('selected comments tab ! =>', this.selectedTab);
-    // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
   navToAboutTab() {
     this.selectedTab = 'About';
     console.log('selected about tab ! =>', this.selectedTab);
-    // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
   navToFriendsTab() {
@@ -174,7 +127,6 @@ export class ProfileComponent implements OnInit {
         alert(error.message);
       }
     )
-    // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
   onAddFriend() {
@@ -205,9 +157,6 @@ export class ProfileComponent implements OnInit {
       (response: Friendship) => {
         this.friendship = response;
         console.log('friendship =>', this.friendship);
-        if (this.friendship === null) {
-          // this.friendship.status = 'Add Friend';
-        }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
