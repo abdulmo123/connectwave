@@ -9,7 +9,6 @@ import com.abdulmo123.connectwave.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,9 +54,4 @@ public class CommentServiceImpl implements CommentService {
         }
         return null;
     }
-
-    /*@Override
-    public int numCommentsForPost(Long postId) {
-        return commentRepository.numCommentsForPost(postId);
-    }*/
 }

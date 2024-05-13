@@ -37,10 +37,4 @@ public class LikeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    /*@GetMapping("/getNumLikesForPost/{postId}")
-    public ResponseEntity<Integer> numLikesForPost(@PathVariable("postId") Long postId) {
-        int numLikesForPost = likeService.numLikesForPost(postId);
-        return new ResponseEntity<>(numLikesForPost, HttpStatus.OK);
-    }*/
 }

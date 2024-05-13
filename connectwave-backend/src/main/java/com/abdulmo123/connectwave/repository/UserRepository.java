@@ -19,9 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserById(Long id);
 
-    @Query("SELECT new com.abdulmo123.connectwave.dto.UserDto " +
-            "(u.id, u.email, u.password, " +
-            "u.firstName, u.lastName, u.gender, u.bio) " +
+    @Query("SELECT new com.abdulmo123.connectwave.dto.UserDto(" +
+            "u.id, u.email, u.firstName, u.lastName, u.gender, u.bio) " +
             "FROM User u " +
             "JOIN u.userPosts p " +
             "WHERE p.id = :postId")

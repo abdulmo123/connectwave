@@ -1,7 +1,6 @@
 package com.abdulmo123.connectwave.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;
@@ -51,12 +50,10 @@ public class User implements Serializable {
   @Column(name = "last_login_date")
   private Date lastLoginDate;
 
-//  @JsonManagedReference
   @JsonIgnore
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
   private List<Post> userPosts = new ArrayList<>();
 
-//  @JsonManagedReference
   @JsonIgnore
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "sender", cascade = CascadeType.ALL)
   private List<Friendship> friends;

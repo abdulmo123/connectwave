@@ -1,9 +1,6 @@
 package com.abdulmo123.connectwave.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -12,7 +9,6 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "comment")
-//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Comment implements Serializable {
 
     @Id
@@ -27,13 +23,11 @@ public class Comment implements Serializable {
     @Column(name="created_date", updatable=false)
     private Date createdDate;
 
-//    @JsonBackReference(value = "comment-user")
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-//    @JsonBackReference(value = "comment-post")
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")

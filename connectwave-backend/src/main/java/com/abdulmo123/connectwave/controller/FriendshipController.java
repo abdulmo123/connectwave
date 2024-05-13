@@ -35,6 +35,11 @@ public class FriendshipController {
         return new ResponseEntity<>(existingFriendshipRequest, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{senderId}/{receiverId}/cancelSentFriendshipRequest")
+    private void cancelSentFriendshipRequest(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+        friendshipService.cancelSentFriendshipRequest(senderId, receiverId);
+    }
+
     @PostMapping("/{senderId}/{receiverId}/{action}/respondToFriendshipRequest")
     private ResponseEntity<Friendship> responseToFriendshipRequest(@PathVariable("action") String action,
                                                                    @PathVariable("senderId") Long senderId,

@@ -15,5 +15,4 @@ public interface LikeService {
 
     Post saveLikeStatus(Long userId, Long postId, String isLiked) throws Exception;
 
-//    int numLikesForPost(Long postId);
 }

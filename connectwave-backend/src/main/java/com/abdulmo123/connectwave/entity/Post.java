@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity
 @Table(name="post")
-//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Post implements Serializable {
 
     @Id
@@ -29,7 +28,6 @@ public class Post implements Serializable {
     @Column(name="created_date", nullable=false, updatable=false)
     private Date createdDate;
 
-//    @JsonBackReference(value = "post-user")
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", referencedColumnName = "id")

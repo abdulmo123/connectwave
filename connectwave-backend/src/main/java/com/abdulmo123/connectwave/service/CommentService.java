@@ -9,5 +9,4 @@ public interface CommentService {
 
     Comment addCommentToPost(Comment comment, Long userId, Long postId);
 
-//    int numCommentsForPost(Long postId);
 }

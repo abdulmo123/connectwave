@@ -8,7 +8,7 @@ import { Friendship } from '../models/friendship';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileNavService {
+export class ProfileService {
 
   userId: number | undefined;
   userProfileInfo: User | undefined;
@@ -37,12 +37,17 @@ export class ProfileNavService {
 
   public addFriend(senderId: number, receiverId: number): Observable<Friendship> {
     return this.http.post<Friendship>(
-      `${environment.hostUrl}/api/v1/friendships/sendFriendshipRequest/${senderId}/${receiverId}`,
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/sendFriendshipRequest`,
       {});
   }
 
   public getExistingFriendshipRequest(senderId: number, receiverId: number): Observable<Friendship> {
     return this.http.get<Friendship>(
-      `${environment.hostUrl}/api/v1/friendships/existingFriendshipRequest/${senderId}/${receiverId}`);
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/existingFriendshipRequest`);
+  }
+
+  public cancelSentFriendshipRequest(senderId: number, receiverId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/cancelSentFriendshipRequest`);
   }
 }

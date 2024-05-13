@@ -7,7 +7,8 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
-import { ProfileNavService } from 'src/app/services/profile-nav.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,24 +24,53 @@ export class ProfileComponent implements OnInit {
   selectedTab: string | undefined;
   userPosts: Post[] = [];
   userLikes: Post[] = [];
+  userFriendships: User[] = [];
 
   constructor(
-    private profileNavService: ProfileNavService,
+    private profileService: ProfileService,
     private router: Router,
     private auth: AuthService,
     private postService: PostService,
-    private likeService: LikeService
+    private likeService: LikeService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.getUserProfileInfo();
-    this.userProfileId = this.profileNavService.getUserData();
+    this.userProfileId = this.profileService.getUserData();
     console.log('user profile id + ' , this.userProfileId);
     this.currentUser = this.auth.getCurrentUser();
     console.log('current user logged in id + ', this.currentUser.id);
     this.getExistingFriendshipRequest();
     this.selectedTab = 'About';
   }
+
+  getUserProfileId() {
+    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+    this.userProfileId = +tempid!;
+  }
+
+
+  handleLogout() {
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('likedPosts');
+    this.router.navigate(['/login']);
+  }
+
+  // getUserFriendships() {
+  //   let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+  //   this.userProfileId = +tempid!;
+
+  //   this.profileService.getUserFriendships(this.userProfileId!).subscribe(
+  //     (response: Friendship[]) => {
+  //       this.userFriendships = response;
+  //       console.log('user friendships =>', this.userFriendships);
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       alert(error.message);
+  //     }
+  //   )
+  // }
 
   getUserProfileInfo() {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
@@ -49,7 +79,7 @@ export class ProfileComponent implements OnInit {
     // this.currentUser = JSON.parse(window.localStorage.getItem("currentUser") || '{}');
     // console.log('current logged in user! => ', this.currentUser);
 
-    this.profileNavService.getUserProfileInfo(this.userProfileId!).subscribe(
+    this.profileService.getUserProfileInfo(this.userProfileId!).subscribe(
       (response: User) => {
         this.userInfo = response;
         // this.profileNavService.setUserProfileInfo(this.userInfo!);
@@ -135,6 +165,15 @@ export class ProfileComponent implements OnInit {
   navToFriendsTab() {
     this.selectedTab = 'Friends';
     console.log('selected friends tab ! =>', this.selectedTab);
+    this.userService.getUserFriendships(this.userProfileId!).subscribe(
+      (response: User[]) => {
+        this.userFriendships = response;
+        console.log('user friendships =>', this.userFriendships);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
     // this.router.navigate(['/user/posts', this.userProfileId]);
   }
 
@@ -142,13 +181,13 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileNavService.addFriend(this.currentUser!.id, this.userProfileId!).subscribe(
+    this.profileService.addFriend(this.currentUser!.id, this.userProfileId!).subscribe(
       (response: Friendship) => {
         console.log('response response ', response)
         this.friendship = response;
         console.log('friendship => ', this.friendship);
-        console.log('user =>', this.friendship.user);
-        console.log('friend =>', this.friendship.friend);
+        console.log('sender =>', this.friendship.sender);
+        console.log('receiver =>', this.friendship.receiver);
         console.log('status =>', this.friendship.status);
       },
       (error: HttpErrorResponse) => {
@@ -162,10 +201,13 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileNavService.getExistingFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
+    this.profileService.getExistingFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
       (response: Friendship) => {
         this.friendship = response;
         console.log('friendship =>', this.friendship);
+        if (this.friendship === null) {
+          // this.friendship.status = 'Add Friend';
+        }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -175,5 +217,23 @@ export class ProfileComponent implements OnInit {
 
   onEditProfile() {
     console.log('edit profile button clicked!')
+  }
+
+  onCancelSentFriendshipRequest() {
+    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+    this.userProfileId = +tempid!;
+
+    this.profileService.cancelSentFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
+      (response: any) => {
+        this.friendship = response
+        console.log('cancel sent friendship request button clicked')
+        console.log('friendship => ', this.friendship)
+        this.getExistingFriendshipRequest();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+
   }
 }

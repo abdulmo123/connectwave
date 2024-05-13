@@ -16,10 +16,10 @@ export class PostService {
   }
 
   public createUserPost(userId: number, userPost: Post): Observable<Post> {
-    return this.http.post<Post>(`${environment.hostUrl}/api/v1/posts/createUserPost/${userId}`, userPost);
+    return this.http.post<Post>(`${environment.hostUrl}/api/v1/posts/${userId}/createUserPost`, userPost);
   }
 
   public getAllPostsByUser(userId: number): Observable<Post[]> {
-    return this.http.get<Post[]>(`${environment.hostUrl}/api/v1/posts/user/${userId}`);
+    return this.http.get<Post[]>(`${environment.hostUrl}/api/v1/posts/${userId}/getUserPosts`);
   }
 }

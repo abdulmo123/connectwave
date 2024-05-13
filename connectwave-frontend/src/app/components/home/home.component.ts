@@ -8,7 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
-import { ProfileNavService } from 'src/app/services/profile-nav.service';
+import { ProfileService } from 'src/app/services/profile.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-home',
@@ -22,13 +24,17 @@ export class HomeComponent implements OnInit {
     private auth: AuthService,
     private likeService: LikeService,
     private commentService: CommentService,
-    private profileNavService: ProfileNavService) {}
+    private profileService: ProfileService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.getAllPosts();
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
     this.getAllLikesByUser();
+    this.getPendingSentFriendshipRequests();
+    this.getPendingReceivedFriendshipRequests();
     const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
     this.allPosts.forEach(post => {
       post.isLikedChk = likedPosts.includes(post.id);
@@ -40,6 +46,8 @@ export class HomeComponent implements OnInit {
   comment: Comment | undefined;
   allPosts: Post[] = [];
   likedPosts: Post[] = [];
+  pendingSentFriendshipRequest: User[] = [];
+  pendingReceivedFriendshipRequest: User[] = [];
 
   public getAllPosts() {
     this.postService.getAllPosts().subscribe(
@@ -57,8 +65,8 @@ export class HomeComponent implements OnInit {
             hour12: true
           });
 
-          this.getNumLikesForPost(post);
-          this.getNumCommentsForPost(post);
+          // this.getNumLikesForPost(post);
+          // this.getNumCommentsForPost(post);
 
           if (post.postComments) {
             post.postComments.forEach((comment: Comment) => {
@@ -120,7 +128,8 @@ export class HomeComponent implements OnInit {
         post.isLiked = isLiked;
         console.log('is post liked?', post.isLiked);
         console.log('is this liked? ', post.isLikedChk);
-        this.getNumLikesForPost(post);
+        // this.getNumLikesForPost(post);
+        this.getAllPosts();
       },
 
       (error: any) => {
@@ -163,27 +172,27 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  public getNumLikesForPost(post: Post): void {
-    this.likeService.getNumLikesForPost(post.id!).subscribe(
-      (response: any) => {
-        post.numOfLikes = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
+  // public getNumLikesForPost(post: Post): void {
+  //   this.likeService.getNumLikesForPost(post.id!).subscribe(
+  //     (response: any) => {
+  //       post.numOfLikes = response;
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       alert(error.message);
+  //     }
+  //   );
+  // }
 
-  public getNumCommentsForPost(post: Post): void {
-    this.commentService.getNumCommentsForPost(post.id!).subscribe(
-      (response: any) => {
-        post.numOfComments = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    )
-  }
+  // public getNumCommentsForPost(post: Post): void {
+  //   this.commentService.getNumCommentsForPost(post.id!).subscribe(
+  //     (response: any) => {
+  //       post.numOfComments = response;
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       alert(error.message);
+  //     }
+  //   )
+  // }
 
   onAddCommentToPost(post: Post, createCommentForm: NgForm) {
     console.log('Form data:', createCommentForm.value);
@@ -207,7 +216,33 @@ export class HomeComponent implements OnInit {
 
   navigateToUserProfile(userId: number) {
     this.router.navigate(['/profiles/user', userId]);
-    this.profileNavService.setUserData(userId);
+    this.profileService.setUserData(userId);
     localStorage.setItem('userProfileId', userId.toString());
+  }
+
+  getPendingSentFriendshipRequests () {
+    this.userService.getPendingSentFriendshipRequests(this.user.id).subscribe(
+      (response: User[]) => {
+        this.pendingSentFriendshipRequest = response;
+        console.log('user pending received friendship requests =>',
+        this.pendingSentFriendshipRequest);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  getPendingReceivedFriendshipRequests() {
+    this.userService.getPendingReceivedFriendshipRequests(this.user.id).subscribe(
+      (response: User[]) => {
+        this.pendingReceivedFriendshipRequest = response;
+        console.log('user pending received friendship requests =>',
+        this.pendingReceivedFriendshipRequest);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
   }
 }
