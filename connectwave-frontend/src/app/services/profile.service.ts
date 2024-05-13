@@ -23,10 +23,6 @@ export class ProfileService {
     this.userId = userId;
   }
 
-  // getUserProfileInfo() {
-  //   return this.userProfileInfo;
-  // }
-
   setUserProfileInfo(userProfileInfo: User) {
     this.userProfileInfo = userProfileInfo;
   }
