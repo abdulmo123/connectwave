@@ -1,23 +1,7 @@
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /> -->
 <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
-
-<nav class="navbar bg-primary" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand">Navbar</a>
-    <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button style="margin-right: 0.3em" type="button" class="btn btn-light">
-        <a><span class="glyphicon glyphicon-inbox"></span></a>
-      </button>
-      <button type="button" class="btn btn-light">
-        <a (click)="handleLogout()"><span class="glyphicon glyphicon-log-out"></span></a>
-      </button>
-    </form>
-  </div>
-</nav>
-<div class="header">
-  <!-- <h2>Blog Name</h2> -->
-</div>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<app-navbar></app-navbar>
 
 <div class="container bootstrap snippets bootdey">
   <div class="row">
@@ -86,7 +70,7 @@
                           <textarea ngModel name="content" class="form-control" placeholder="write a comment..."
                             rows="2.5"></textarea>
                           <br>
-                          <button [disabled]="createCommentForm.invalid" type="submit" class="btn btn-info pull-right"
+                          <button [disabled]="createCommentForm.invalid" type="submit" class="btn btn-light pull-right"
                             style="margin-top: -15px">Post</button>
                         </form>
                         <div class="clearfix" style="margin: -15px"></div>

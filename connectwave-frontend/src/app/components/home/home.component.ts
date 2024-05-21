@@ -8,9 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
 import { CommentService } from 'src/app/services/comment.service';
-import { ProfileService } from 'src/app/services/profile.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
+import { FriendshipService } from 'src/app/services/friendship.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     private auth: AuthService,
     private likeService: LikeService,
     private commentService: CommentService,
-    private profileService: ProfileService,
+    private friendshipService: FriendshipService,
     private userService: UserService
   ) {}
 
@@ -141,11 +141,6 @@ export class HomeComponent implements OnInit {
     console.log('who am i? =>', this.user);
   }
 
-  handleLogout() {
-    localStorage.removeItem('currentUser')
-    localStorage.removeItem('likedPosts');
-    this.router.navigate(['/login']);
-  }
 
   public getAllLikesByUser() {
     this.likeService.getAllLikesByUser(this.user.id!).subscribe(
@@ -190,7 +185,7 @@ export class HomeComponent implements OnInit {
 
   navigateToUserProfile(userId: number) {
     this.router.navigate(['/profiles/user', userId]);
-    this.profileService.setUserData(userId);
+    this.userService.setUserData(userId);
     localStorage.setItem('userProfileId', userId.toString());
   }
 
@@ -219,4 +214,17 @@ export class HomeComponent implements OnInit {
       }
     )
   }
+
+  onCloseNotifications() {
+    console.log('--- in CLOSE notifications modal ---')
+    // let notifPopup = document.getElementById('exampleModal');
+    // if (notifPopup !== null) {
+    //   console.log('im NOT gonna display!')
+    //   notifPopup.style.display = 'none';
+    //   // notifPopup.style.height = '25em';
+    //   // notifPopup.style.width = '25em';
+    // }
+  }
+
+
 }

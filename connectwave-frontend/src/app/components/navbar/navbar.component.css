@@ -1,0 +1,35 @@
+.media > .media-left,
+.media > .pull-left {
+  padding-right: 15px;
+}
+.media-body,
+.media-left,
+.media-right {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.media.media-xs .media-object {
+  width: 32px;
+}
+
+.accept {
+  color: #FFF;
+  background: #44CC44;
+  padding: 2px 5px;
+  box-shadow: 0 4px 0 0 #2EA62E;
+}
+.accept:hover {
+  background: #6FE76F;
+  box-shadow: 0 4px 0 0 #7ED37E;
+}
+.deny {
+  color: #FFF;
+  background: tomato;
+  padding: 2px 5px;
+  box-shadow: 0 4px 0 0 #CB4949;
+}
+.deny:hover {
+  background: rgb(255, 147, 128);
+  box-shadow: 0 4px 0 0 #EF8282;
+}
