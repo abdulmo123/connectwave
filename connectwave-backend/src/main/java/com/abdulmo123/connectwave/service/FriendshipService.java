@@ -17,6 +17,8 @@ public interface FriendshipService {
 
     void removeExistingFriendship(Long senderId, Long receiverId);
 
+    Friendship existingFriendshipRelationship(Long senderId, Long receiverId);
+
     FriendshipDto getNewFriendshipRequest(Long senderId, Long receiverId);
 
 }

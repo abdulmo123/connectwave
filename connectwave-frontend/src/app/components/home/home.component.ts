@@ -214,17 +214,4 @@ export class HomeComponent implements OnInit {
       }
     )
   }
-
-  onCloseNotifications() {
-    console.log('--- in CLOSE notifications modal ---')
-    // let notifPopup = document.getElementById('exampleModal');
-    // if (notifPopup !== null) {
-    //   console.log('im NOT gonna display!')
-    //   notifPopup.style.display = 'none';
-    //   // notifPopup.style.height = '25em';
-    //   // notifPopup.style.width = '25em';
-    // }
-  }
-
-
 }

@@ -33,4 +33,14 @@ export class FriendshipService {
       `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/${action}/respondToFriendshipRequest`,
       {})
   }
+
+  public getExistingFriendshipRelationship(senderId: number, receiverId: number): Observable<Friendship> {
+    return this.http.get<Friendship>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/existingFriendshipRelationship`);
+  }
+
+  public removeExistingFriend(senderId: number, receiverId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/removeExistingFriend`);
+  }
 }

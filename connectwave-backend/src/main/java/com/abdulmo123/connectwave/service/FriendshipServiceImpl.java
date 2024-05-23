@@ -60,8 +60,13 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public void removeExistingFriendship(Long senderId, Long receiverId) {
-        List<Friendship> existingFriendship = friendshipRepository.existingFriendship(senderId, receiverId);
+        Friendship existingFriendship = friendshipRepository.existingFriendship(senderId, receiverId);
         friendshipRepository.removeExistingFriendship(senderId, receiverId);
+    }
+
+    @Override
+    public Friendship existingFriendshipRelationship(Long senderId, Long receiverId) {
+        return friendshipRepository.existingFriendship(senderId, receiverId);
     }
 
     @Override

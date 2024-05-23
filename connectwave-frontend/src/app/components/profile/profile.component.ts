@@ -45,6 +45,7 @@ export class ProfileComponent implements OnInit {
     this.getExistingFriendshipRequest();
     this.getPendingReceivedFriendshipRequests();
     this.selectedTab = 'About';
+    this.getExistingFriendshipRelationship();
   }
 
   getUserProfileId() {
@@ -188,28 +189,6 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  onOpenNotifications() {
-    console.log('--- in OPEN notifications modal ---')
-    let notifPopup = document.getElementById('exampleModal');
-    if (notifPopup !== null) {
-      console.log('im gonna display!')
-      // notifPopup.style.display = 'block';
-      // notifPopup.style.height = '25em';
-      // notifPopup.style.width = '25em';
-    }
-  }
-
-  onCloseNotifications() {
-    console.log('--- in CLOSE notifications modal ---')
-    // let notifPopup = document.getElementById('exampleModal');
-    // if (notifPopup !== null) {
-    //   console.log('im NOT gonna display!')
-    //   notifPopup.style.display = 'none';
-    //   // notifPopup.style.height = '25em';
-    //   // notifPopup.style.width = '25em';
-    // }
-  }
-
   getPendingReceivedFriendshipRequests() {
     this.userService.getPendingReceivedFriendshipRequests(this.currentUser!.id).subscribe(
       (response: User[]) => {
@@ -219,6 +198,33 @@ export class ProfileComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
+      }
+    )
+  }
+
+  getExistingFriendshipRelationship() {
+    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+    this.userProfileId = +tempid!;
+    this.friendshipService.getExistingFriendshipRelationship(this.currentUser.id!, this.userProfileId).subscribe(
+      (response: Friendship) => {
+        this.friendship = response;
+        console.log('friendship =>', this.friendship);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+  }
+
+  onRemoveFriend(friend: User) {
+    this.friendshipService.removeExistingFriend(this.currentUser.id!, friend.id).subscribe(
+      (response) => {
+        console.log('friendship has been DELETED!! => ', response);
+        this.getExistingFriendshipRequest();
+        this.getExistingFriendshipRelationship();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
       }
     )
   }
