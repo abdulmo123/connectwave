@@ -16,9 +16,10 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     // query that gets all the existing friendship (status = 'FRIEND')
     @Query(value = "SELECT f.* " +
             "FROM connectwave.friendship f " +
-            "WHERE (f.sender_id = :senderId OR f.receiver_id = :receiverId) " +
+            "WHERE ((sender_id = :senderId AND receiver_id = :receiverId) " +
+            "OR (sender_id = :receiverId AND receiver_id = :senderId)) " +
             "AND f.status = 'FRIEND'", nativeQuery = true)
-    List<Friendship> existingFriendship(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
+    Friendship existingFriendship(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
 
     // query for sending friend requests

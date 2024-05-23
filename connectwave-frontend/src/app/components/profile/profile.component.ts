@@ -5,9 +5,9 @@ import { Friendship } from 'src/app/models/friendship';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { FriendshipService } from 'src/app/services/friendship.service';
 import { LikeService } from 'src/app/services/like.service';
 import { PostService } from 'src/app/services/post.service';
-import { ProfileService } from 'src/app/services/profile.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -25,9 +25,10 @@ export class ProfileComponent implements OnInit {
   userPosts: Post[] = [];
   userLikes: Post[] = [];
   userFriendships: User[] = [];
+  pendingReceivedFriendshipRequest: User[] = [];
 
   constructor(
-    private profileService: ProfileService,
+    private friendshipService: FriendshipService,
     private router: Router,
     private auth: AuthService,
     private postService: PostService,
@@ -37,12 +38,14 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserProfileInfo();
-    this.userProfileId = this.profileService.getUserData();
+    this.userProfileId = this.userService.getUserData();
     console.log('user profile id + ' , this.userProfileId);
     this.currentUser = this.auth.getCurrentUser();
     console.log('current user logged in id + ', this.currentUser.id);
     this.getExistingFriendshipRequest();
+    this.getPendingReceivedFriendshipRequests();
     this.selectedTab = 'About';
+    this.getExistingFriendshipRelationship();
   }
 
   getUserProfileId() {
@@ -61,7 +64,7 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileService.getUserProfileInfo(this.userProfileId!).subscribe(
+    this.userService.getUserProfileInfo(this.userProfileId!).subscribe(
       (response: User) => {
         this.userInfo = response;
         console.log(' user profile info => ', this.userInfo);
@@ -133,7 +136,7 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileService.addFriend(this.currentUser!.id, this.userProfileId!).subscribe(
+    this.friendshipService.addFriend(this.currentUser!.id, this.userProfileId!).subscribe(
       (response: Friendship) => {
         console.log('response response ', response)
         this.friendship = response;
@@ -153,7 +156,7 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileService.getExistingFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
+    this.friendshipService.getExistingFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
       (response: Friendship) => {
         this.friendship = response;
         console.log('friendship =>', this.friendship);
@@ -172,7 +175,7 @@ export class ProfileComponent implements OnInit {
     let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
     this.userProfileId = +tempid!;
 
-    this.profileService.cancelSentFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
+    this.friendshipService.cancelSentFriendshipRequest(this.currentUser!.id, this.userProfileId).subscribe(
       (response: any) => {
         this.friendship = response
         console.log('cancel sent friendship request button clicked')
@@ -184,5 +187,45 @@ export class ProfileComponent implements OnInit {
       }
     )
 
+  }
+
+  getPendingReceivedFriendshipRequests() {
+    this.userService.getPendingReceivedFriendshipRequests(this.currentUser!.id).subscribe(
+      (response: User[]) => {
+        this.pendingReceivedFriendshipRequest = response;
+        console.log('user pending received friendship requests =>',
+        this.pendingReceivedFriendshipRequest);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  getExistingFriendshipRelationship() {
+    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+    this.userProfileId = +tempid!;
+    this.friendshipService.getExistingFriendshipRelationship(this.currentUser.id!, this.userProfileId).subscribe(
+      (response: Friendship) => {
+        this.friendship = response;
+        console.log('friendship =>', this.friendship);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+  }
+
+  onRemoveFriend(friend: User) {
+    this.friendshipService.removeExistingFriend(this.currentUser.id!, friend.id).subscribe(
+      (response) => {
+        console.log('friendship has been DELETED!! => ', response);
+        this.getExistingFriendshipRequest();
+        this.getExistingFriendshipRelationship();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
   }
 }

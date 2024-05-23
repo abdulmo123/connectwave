@@ -8,28 +8,9 @@ import { Friendship } from '../models/friendship';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileService {
-
-  userId: number | undefined;
-  userProfileInfo: User | undefined;
+export class FriendshipService {
 
   constructor(private http: HttpClient) { }
-
-  getUserData() {
-    return this.userId;
-  }
-
-  setUserData(userId: number) {
-    this.userId = userId;
-  }
-
-  setUserProfileInfo(userProfileInfo: User) {
-    this.userProfileInfo = userProfileInfo;
-  }
-
-  public getUserProfileInfo(userId: number): Observable<User> {
-    return this.http.get<User>(`${environment.hostUrl}/api/v1/users/find/${userId}`);
-  }
 
   public addFriend(senderId: number, receiverId: number): Observable<Friendship> {
     return this.http.post<Friendship>(
@@ -45,5 +26,21 @@ export class ProfileService {
   public cancelSentFriendshipRequest(senderId: number, receiverId: number): Observable<void> {
     return this.http.delete<void>(
       `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/cancelSentFriendshipRequest`);
+  }
+
+  public responseToFriendshipRequest(senderId: number, receiverId: number, action: string): Observable<Friendship> {
+    return this.http.post<Friendship>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/${action}/respondToFriendshipRequest`,
+      {})
+  }
+
+  public getExistingFriendshipRelationship(senderId: number, receiverId: number): Observable<Friendship> {
+    return this.http.get<Friendship>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/existingFriendshipRelationship`);
+  }
+
+  public removeExistingFriend(senderId: number, receiverId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.hostUrl}/api/v1/friendships/${senderId}/${receiverId}/removeExistingFriend`);
   }
 }

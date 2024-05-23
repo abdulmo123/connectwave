@@ -17,12 +17,6 @@ public class FriendshipController {
     @Autowired
     private FriendshipService friendshipService;
 
-    /*@GetMapping("/getUserFriendships/{senderId}")
-    private ResponseEntity<List<FriendshipDto>> getUserFriendship(@PathVariable("senderId") Long senderId) {
-        List<FriendshipDto> userFriendships = friendshipService.getUserFriendships(senderId);
-        return new ResponseEntity<>(userFriendships, HttpStatus.OK);
-    }*/
-
     @PostMapping("/{senderId}/{receiverId}/sendFriendshipRequest")
     private ResponseEntity<FriendshipDto> sendFriendshipRequest(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
         FriendshipDto newFriendshipRequest = friendshipService.sendFriendshipRequest(senderId, receiverId);
@@ -54,15 +48,8 @@ public class FriendshipController {
         friendshipService.removeExistingFriendship(senderId, receiverId);
     }
 
-    /*@GetMapping("/{senderId}/getPendingSentFriendshipRequests")
-    public ResponseEntity<List<FriendshipDto>> getPendingSentFriendshipRequests(@PathVariable("senderId") Long senderId) {
-        List<FriendshipDto> allPendingSentFriendshipRequests = friendshipService.getPendingSentFriendshipRequests(senderId);
-        return new ResponseEntity<>(allPendingSentFriendshipRequests, HttpStatus.OK);
+    @GetMapping("/{senderId}/{receiverId}/existingFriendshipRelationship")
+    public ResponseEntity<Friendship> existingFriendshipRelationship(@PathVariable("senderId") Long senderId, @PathVariable("receiverId") Long receiverId) {
+        return new ResponseEntity<>(this.friendshipService.existingFriendshipRelationship(senderId, receiverId), HttpStatus.OK);
     }
-
-    @GetMapping("/{receiverId}/getPendingReceivedFriendshipRequests")
-    public ResponseEntity<List<FriendshipDto>> getPendingReceivedFriendshipRequests(@PathVariable("receiverId") Long receiverId) {
-        List<FriendshipDto> allPendingReceivedFriendshipRequests = friendshipService.getPendingReceivedFriendRequests(receiverId);
-        return new ResponseEntity<>(allPendingReceivedFriendshipRequests, HttpStatus.OK);
-    }*/
 }

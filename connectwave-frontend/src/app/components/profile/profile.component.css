@@ -988,3 +988,14 @@ body.flat-black {
     display: table-cell;
     vertical-align: top;
 }
+
+
+.deny {
+  border-radius: 50%;
+  color: #FFF;
+  background: tomato;
+  padding: 2px 5px;
+}
+.deny:hover {
+  background: rgb(255, 147, 128);
+}
