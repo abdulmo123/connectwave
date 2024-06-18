@@ -1,8 +1,18 @@
-spring.datasource.url=jdbc:mysql://localhost:3306/connectwave
-spring.datasource.username=root
-spring.datasource.password=abdullahim123
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-spring.jpa-show-sql=true
-spring.jpa.hibernate.ddl-auto=create
-spring.jpa.properties.hibernate.ddl-auto=create
-logging.level.org.hibernate.SQL=DEBUG
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/connectwave
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update
+    hibernate:
+      ddl-auto: update
+  jpa-show-sql: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
