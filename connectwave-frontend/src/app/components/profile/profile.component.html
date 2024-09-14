@@ -57,6 +57,53 @@
                             <!-- <button class="btn btn-danger" >Danger</button> -->
                           </ng-template>
                         </ng-template>
+                        <button style="margin-left: 10px; color: white" data-toggle="modal" data-target="#modal-chat"
+                          class="btn btn-primary">Message</button>
+                        <div id="modal-chat" class="modal modal-message modal-danger fade" style="display: none;"
+                          aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <div style="color: black" class="modal-title">Chat With: {{userInfo.firstName + " " +
+                                  userInfo.lastName}}</div>
+                              </div>
+                              <!-- TODO: HTML FOR CHAT STUFF -->
+                              <div style="color: black" class="modal-body">
+                                <div class="chat-container">
+                                  <ul *ngFor="let messages of conversationMessages"
+                                    class="chat-box chatContainerScroll">
+                                    <li class="${message.sender.id == currentUser.id ? 'chat-left' : 'chat-right'}">
+                                      <div class="chat-avatar">
+                                        <img src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                                          alt="Retail Admin">
+                                        <div class="chat-name">
+                                          {{ messages.sender?.id === currentUser.id ? 'You' : messages.sender?.firstName
+                                          }}
+                                        </div>
+                                      </div>
+                                      <div class="chat-text">
+                                        {{messages.message}}
+                                      </div>
+                                      <div class="chat-hour">
+                                        {{messages.createdDate}} <span class="fa fa-check-circle"></span>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                  <div class="form-group mt-3 mb-0">
+                                    <textarea class="form-control" rows="3"
+                                      placeholder="Type your message here..."></textarea>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                <!-- <button (click)="onRemoveFriend(userInfo)" type="button" class="btn btn-danger"
+                                  data-dismiss="modal">Yes</button> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <ng-template #elseBlock><a (click)="onEditProfile()" class="btn btn-primary">Edit
                           Profile</a></ng-template>

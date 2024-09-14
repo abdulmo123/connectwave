@@ -1,5 +1,6 @@
 package com.abdulmo123.connectwave.controller;
 
+import com.abdulmo123.connectwave.dto.MessageDto;
 import com.abdulmo123.connectwave.entity.Message;
 import com.abdulmo123.connectwave.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping("/{conversationId}/getConversationMessages")
-    private ResponseEntity<List<Message>> getConversationMessages(@PathVariable("conversationId") Long conversationId) {
-        List<Message> conversationMessages = messageService.getConversationMessages(conversationId);
+    @GetMapping("/{senderId}/{receiverId}/getConversationMessages")
+    private ResponseEntity<List<MessageDto>> getConversationMessages(@PathVariable("senderId") Long senderId,
+                                                                  @PathVariable("receiverId") Long receiverId) {
+        List<MessageDto> conversationMessages = messageService.getConversationMessages(senderId, receiverId);
         return new ResponseEntity<>(conversationMessages, HttpStatus.OK);
     }
+
 
     @PostMapping("/{senderId}/{receiverId}/sendMessage")
     private ResponseEntity<Message> sendMessage(@RequestBody Message message,

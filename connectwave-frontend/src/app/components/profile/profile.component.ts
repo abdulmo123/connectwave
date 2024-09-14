@@ -2,11 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Friendship } from 'src/app/models/friendship';
+import { Message } from 'src/app/models/message';
 import { Post } from 'src/app/models/post';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { FriendshipService } from 'src/app/services/friendship.service';
 import { LikeService } from 'src/app/services/like.service';
+import { MessageService } from 'src/app/services/message.service';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit {
   userLikes: Post[] = [];
   userFriendships: User[] = [];
   pendingReceivedFriendshipRequest: User[] = [];
+  conversationMessages: Message[] = [];
 
   constructor(
     private friendshipService: FriendshipService,
@@ -33,7 +36,8 @@ export class ProfileComponent implements OnInit {
     private auth: AuthService,
     private postService: PostService,
     private likeService: LikeService,
-    private userService: UserService
+    private userService: UserService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,7 @@ export class ProfileComponent implements OnInit {
     this.getPendingReceivedFriendshipRequests();
     this.selectedTab = 'About';
     this.getExistingFriendshipRelationship();
+    this.getConversationMessages();
   }
 
   getUserProfileId() {
@@ -222,6 +227,20 @@ export class ProfileComponent implements OnInit {
         console.log('friendship has been DELETED!! => ', response);
         this.getExistingFriendshipRequest();
         this.getExistingFriendshipRelationship();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
+  }
+
+  getConversationMessages() {
+    let tempid = JSON.parse(localStorage.getItem('userProfileId') || '');
+    this.userProfileId = +tempid!;
+    this.messageService.getConversationMessages(this.currentUser.id!, this.userProfileId).subscribe(
+      (response: Message[]) => {
+        console.log('here are my messages ==> ', response);
+        this.conversationMessages = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message)

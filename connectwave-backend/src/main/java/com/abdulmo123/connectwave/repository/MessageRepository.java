@@ -12,19 +12,27 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    // query to get list of messages for a given conversation between 2 users
-    @Query(value = "select m.* from connectwave.messages m " +
-            "where conversation_id = :conversationId", nativeQuery = true)
-    List<Message> getConversationMessages(@Param("conversationId") Long conversationId);
-
-    // query to check if a conversation exists between 2 users
+    // query to check if conversation exists between 2 users
     @Query(value = "select m.* from connectwave.messages m " +
             "where (sender_id = :senderId AND receiver_id = :receiverId " +
             "OR sender_id = :receiverId AND receiver_id = :senderId) " +
             "limit 1", nativeQuery = true)
     Message checkConversationExists(@Param("senderId") Long senderId,
-                                @Param("receiverId") Long receiverId);
+                                    @Param("receiverId") Long receiverId);
 
+    // query to grab convesation messages between 2 users
+    /*@Query(value = "select m.* from connectwave.messages m " +
+            "where (sender_id = :senderId AND receiver_id = :receiverId " +
+            "OR sender_id = :receiverId AND receiver_id = :senderId) " +
+            "order by created_date asc", nativeQuery = true)
+    List<Message> getConversationMessages(@Param("senderId") Long senderId,
+                                @Param("receiverId") Long receiverId);*/
+    @Query("SELECT m.id, m.conversationId, m.sender, m.receiver, m.message, m.createdDate FROM Message m " +
+            "WHERE m.sender.id = :senderId AND m.receiver.id = :receiverId " +
+//            "AND m.status = 'PENDING'" +
+            "ORDER BY m.createdDate DESC")
+    List<Object[]> getConversationMessages(@Param("senderId") Long senderId,
+                                          @Param("receiverId") Long receiverId);
     // query to add a message to the database based on the sender, receiver, and conversation id's
     @Modifying
     @Query(value = "INSERT INTO connectwave.messages " +

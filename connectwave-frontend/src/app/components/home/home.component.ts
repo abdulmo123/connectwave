@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
     this.user = this.auth.getCurrentUser();
     console.log('here is my user =>' , this.user);
     this.getAllLikesByUser();
+    this.getUserFriends();
     this.getPendingSentFriendshipRequests();
     this.getPendingReceivedFriendshipRequests();
     const likedPosts = JSON.parse(localStorage.getItem('likedPosts') || '[]');
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
   comment: Comment | undefined;
   allPosts: Post[] = [];
   likedPosts: Post[] = [];
+  userFriendships: User[] = [];
   pendingSentFriendshipRequest: User[] = [];
   pendingReceivedFriendshipRequest: User[] = [];
 
@@ -208,6 +210,18 @@ export class HomeComponent implements OnInit {
         this.pendingReceivedFriendshipRequest = response;
         console.log('user pending received friendship requests =>',
         this.pendingReceivedFriendshipRequest);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
+
+  getUserFriends() {
+    this.userService.getUserFriendships(this.user.id).subscribe(
+      (response: User[]) => {
+        this.userFriendships = response;
+        console.log('user friendships =>', this.userFriendships);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
