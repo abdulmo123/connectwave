@@ -58,4 +58,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND f.status = 'PENDING'")
     List<UserDto> getPendingReceivedFriendshipRequests(@Param("userId") Long userId);
 
+    // check email exists before sending forgot password email
+    @Query(value = "select u.* from connectwave.user u " +
+            "where trim(u.email) = trim(:email)", nativeQuery = true)
+    User findUserByEmail(@Param("email") String email);
+
 }
