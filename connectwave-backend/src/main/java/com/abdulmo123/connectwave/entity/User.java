@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -58,9 +59,15 @@ public class User implements Serializable {
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "sender", cascade = CascadeType.ALL)
   private List<Friendship> friends;
 
+  @Column(name = "reset_pwd_token")
+  private String resetPwdToken;
+
+  @Column(name = "reset_pwd_token_exp_dt")
+  private LocalDateTime resetPwdTokenExpDt;
+
   public User() {}
 
-  public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts, List<Friendship> friends) {
+  public User(String email, String password, String firstName, String lastName, String gender, String bio, Date createdDate, Date lastLoginDate, List<Post> userPosts, List<Friendship> friends, String resetPwdToken, LocalDateTime resetPwdTokenExpDt) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
@@ -71,6 +78,8 @@ public class User implements Serializable {
     this.lastLoginDate = lastLoginDate;
     this.userPosts = userPosts;
     this.friends = friends;
+    this.resetPwdToken = resetPwdToken;
+    this.resetPwdTokenExpDt = resetPwdTokenExpDt;
   }
 
   public Long getId() { return id; }
@@ -125,6 +134,22 @@ public class User implements Serializable {
     this.friends = friends;
   }
 
+  public String getResetPwdToken() {
+    return resetPwdToken;
+  }
+
+  public void setResetPwdToken(String resetPwdToken) {
+    this.resetPwdToken = resetPwdToken;
+  }
+
+  public LocalDateTime getResetPwdTokenExpDt() {
+    return resetPwdTokenExpDt;
+  }
+
+  public void setResetPwdTokenExpDt(LocalDateTime resetPwdTokenExpDt) {
+    this.resetPwdTokenExpDt = resetPwdTokenExpDt;
+  }
+
   @Override
   public String toString() {
     return "User{" +
@@ -139,6 +164,8 @@ public class User implements Serializable {
             ", lastLoginDate=" + lastLoginDate +
             ", userPosts=" + userPosts +
             ", friends=" + friends +
+            ", resetPwdToken='" + resetPwdToken + '\'' +
+            ", resetPwdTokenExpDt=" + resetPwdTokenExpDt +
             '}';
   }
 }

@@ -46,4 +46,11 @@ export class UserService {
       `${environment.hostUrl}/api/v1/users/${userId}/getPendingReceivedFriendshipRequests`
     )
   }
+
+  public resetPassword(token: string, newPassword: string): Observable<string> {
+    return this.http.post(`${environment.hostUrl}/api/v1/users/reset-password`,
+      { token, newPassword },
+      { responseType: 'text'}
+    ) as Observable<string>;
+  }
 }
