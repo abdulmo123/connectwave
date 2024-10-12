@@ -17,7 +17,7 @@ public class EmailController {
 
     @GetMapping("/sendMail")
     public void sendMail() {
-        emailService.sendEmail( "abdullah2224@gmail.com", "Test email", "This is a test email.");
+        emailService.sendEmail( "*@gmail.com", "Test email", "This is a test email.");
     }
 
     // TODO: send forgot password email
