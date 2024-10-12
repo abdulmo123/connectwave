@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.service;
 
 
+import com.abdulmo123.connectwave.dto.ResetPasswordRequestDto;
 import com.abdulmo123.connectwave.dto.UserDto;
 import com.abdulmo123.connectwave.entity.AppUserDetails;
 import com.abdulmo123.connectwave.entity.User;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -74,5 +77,24 @@ public class UserService implements UserDetailsService {
 
     public List<UserDto> getPendingReceivedFriendshipRequests(Long userId) {
         return userRepository.getPendingReceivedFriendshipRequests(userId);
+    }
+
+    public User findUserByResetPwdToken(String token) {
+        return userRepository.findUserByResetPwdToken(token);
+    }
+
+    public String resetPassword(ResetPasswordRequestDto resetPasswordRequestDto) {
+        Optional<User> user = Optional.ofNullable(userRepository.findUserByResetPwdToken(resetPasswordRequestDto.getToken()));
+
+        if (user.isEmpty() || user.get().getResetPwdTokenExpDt().isBefore(LocalDateTime.now())) {
+            return "Invalid or expired token";
+        }
+
+        user.get().setPassword(new PasswordGenerator().encodePassword(resetPasswordRequestDto.getNewPassword()));
+        user.get().setResetPwdToken(null);
+        user.get().setResetPwdTokenExpDt(null);
+        userRepository.save(user.get());
+
+        return "Password has been successfully reset.";
     }
 }

@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -52,10 +57,17 @@ public class EmailServiceImpl implements EmailService {
                 messageHelper.setTo(to);
                 messageHelper.setSubject("Reset Password");
 
-                Context context = new Context();
-//                context.setVariable("resetLink", resetLink); // pass the reset link to the template
+                String resetToken = UUID.randomUUID().toString().replace("-", "");
+                String resetLink = "http://localhost:4200/reset-password?token=" + resetToken;
 
-                String htmlContent = templateEngine.process("forgot-pwd-email.html", context); // specify your template location (remove .html extension)
+                user.setResetPwdToken(resetToken);
+                user.setResetPwdTokenExpDt(LocalDateTime.now().plusMinutes(30));
+                userRepository.save(user);
+
+                Context context = new Context();
+                context.setVariable("resetLink", resetLink);
+
+                String htmlContent = templateEngine.process("forgot-pwd-email", context);
                 messageHelper.setText(htmlContent, true);
 
                 emailSender.send(mimeMessage);

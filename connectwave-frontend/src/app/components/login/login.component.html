@@ -24,8 +24,10 @@
                       placeholder="Password">
                   </div>
                   <button (click)="onLogin()" type="submit" class="btn btn-theme" style="float: right;">Login</button>
-                  <a href="#l" class="forgot-link float-right text-primary">Forgot password?</a>
+                  <a class="forgot-link float-right text-primary" data-toggle="modal" data-target="#modal-info">Forgot
+                    password?</a>
                 </form>
+
               </div>
               <p class="text-muted text-center mt-3 mb-0">Don't have an account? <a (click)="navToSignUp()"
                   class="text-primary ml-1">Sign up</a></p>
@@ -42,6 +44,30 @@
                 </div>
               </div>
             </div> -->
+
+            <div id="modal-info" class="modal modal-message modal-info fade" style="display: none;" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Enter your email to receive reset password link.</h5>
+                  </div>
+                  <div class="modal-body">
+                    <form #resetPwdForm="ngForm">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Enter email address</label>
+                        <input type="text" name="email" [(ngModel)]="resetPwd.email" class="form-control"
+                          placeholder="Email">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button (click)="sendForgotPwdEmail(resetPwdForm)" type="button" class="btn btn-primary"
+                      data-dismiss="modal">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

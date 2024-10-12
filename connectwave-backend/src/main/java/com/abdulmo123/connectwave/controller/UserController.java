@@ -1,14 +1,18 @@
 package com.abdulmo123.connectwave.controller;
 
+import com.abdulmo123.connectwave.dto.ResetPasswordRequestDto;
 import com.abdulmo123.connectwave.dto.UserDto;
 import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.service.UserService;
+import com.abdulmo123.connectwave.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -51,5 +55,17 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getPendingReceivedFriendshipRequests(@PathVariable("userId") Long userId) {
         List<UserDto> pendingReceivedFriendshipRequests = userService.getPendingReceivedFriendshipRequests(userId);
         return new ResponseEntity<>(pendingReceivedFriendshipRequests, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestDto resetPasswordRequestDto) {
+
+        String result = userService.resetPassword(resetPasswordRequestDto);
+
+        if ("Invalid or expired token".equals(result)) {
+            return ResponseEntity.badRequest().body(result);
+        }
+
+        return ResponseEntity.ok(result);
     }
 }

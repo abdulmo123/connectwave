@@ -63,4 +63,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where trim(u.email) = trim(:email)", nativeQuery = true)
     User findUserByEmail(@Param("email") String email);
 
+
+    @Query(value = "select u.* from connectwave.user u " +
+            "where trim(u.reset_pwd_token) = trim(:token)", nativeQuery = true)
+    User findUserByResetPwdToken(@Param("token") String token);
 }

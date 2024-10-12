@@ -4,7 +4,11 @@
     <title>Reset Password</title>
 </head>
 <body>
-<p>This is your requested email to reset a forgotten password.</p>
-<p>Please click this link to reset your password: --></p>
+<div>
+    <p>This is your requested email to reset a forgotten password.</p>
+    <p>Please click this link to reset your password:
+        <a th:href="${resetLink}" target="_blank">Reset Password</a>
+    </p>
+</div>
 </body>
 </html>
