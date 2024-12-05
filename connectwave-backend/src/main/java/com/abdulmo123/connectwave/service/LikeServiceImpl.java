@@ -1,7 +1,8 @@
 package com.abdulmo123.connectwave.service;
 
 
-import com.abdulmo123.connectwave.entity.Post;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.response.HttpResponse;
 import com.abdulmo123.connectwave.repository.LikeRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;
@@ -23,8 +24,13 @@ public class LikeServiceImpl implements LikeService {
     private PostRepository postRepository;
 
     @Override
-    public List<Post> getAllLikesByUser (Long userId) {
-        return postRepository.getPostsLikedByUser(userId);
+    public HttpResponse getAllLikesByUser (Long userId) {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setStatus(200);
+        httpResponse.setMessage("All likes by user with id : " + userId);
+        httpResponse.setData(postRepository.getPostsLikedByUser(userId));
+
+        return httpResponse;
     }
 
     @Override

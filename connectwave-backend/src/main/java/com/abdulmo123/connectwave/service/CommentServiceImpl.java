@@ -1,8 +1,8 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.Comment;
-import com.abdulmo123.connectwave.entity.Post;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.Comment;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.repository.CommentRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;

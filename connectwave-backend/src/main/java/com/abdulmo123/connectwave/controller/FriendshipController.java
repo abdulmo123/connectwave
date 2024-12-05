@@ -1,14 +1,12 @@
 package com.abdulmo123.connectwave.controller;
 
 import com.abdulmo123.connectwave.dto.FriendshipDto;
-import com.abdulmo123.connectwave.entity.Friendship;
+import com.abdulmo123.connectwave.model.entity.Friendship;
 import com.abdulmo123.connectwave.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/friendships")

@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

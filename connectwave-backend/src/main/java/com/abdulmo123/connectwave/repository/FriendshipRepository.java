@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.repository;
 
-import com.abdulmo123.connectwave.entity.Friendship;
+import com.abdulmo123.connectwave.model.entity.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,9 +1,7 @@
 package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.dto.FriendshipDto;
-import com.abdulmo123.connectwave.entity.Friendship;
-
-import java.util.List;
+import com.abdulmo123.connectwave.model.entity.Friendship;
 
 public interface FriendshipService {
 

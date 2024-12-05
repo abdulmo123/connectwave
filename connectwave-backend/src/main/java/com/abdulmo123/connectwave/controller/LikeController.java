@@ -1,6 +1,7 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.entity.Post;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.response.HttpResponse;
 import com.abdulmo123.connectwave.service.LikeService;
 import com.abdulmo123.connectwave.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class LikeController {
     private PostService postService;
 
     @GetMapping("/{userId}/getAllLikesByUser")
-    public ResponseEntity<List<Post>> getAllLikesByUser(@PathVariable ("userId") Long userId) {
-        List<Post> allLikesByUser = likeService.getAllLikesByUser(userId);
+    public ResponseEntity<HttpResponse> getAllLikesByUser(@PathVariable ("userId") Long userId) {
+        HttpResponse allLikesByUser = likeService.getAllLikesByUser(userId);
         return new ResponseEntity<>(allLikesByUser, HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.entity.Message;
+import com.abdulmo123.connectwave.model.entity.Message;
 import com.abdulmo123.connectwave.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

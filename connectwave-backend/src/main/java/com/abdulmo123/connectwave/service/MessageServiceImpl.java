@@ -1,7 +1,7 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.Message;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.Message;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

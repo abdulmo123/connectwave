@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.entity.Comment;
+import com.abdulmo123.connectwave.model.entity.Comment;
 import com.abdulmo123.connectwave.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

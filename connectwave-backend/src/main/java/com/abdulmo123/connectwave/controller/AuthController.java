@@ -1,7 +1,7 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.entity.AppUserDetails;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.AppUserDetails;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import com.abdulmo123.connectwave.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

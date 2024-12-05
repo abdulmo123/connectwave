@@ -3,10 +3,11 @@ package com.abdulmo123.connectwave.service;
 import com.abdulmo123.connectwave.dto.CommentDto;
 import com.abdulmo123.connectwave.dto.PostDto;
 import com.abdulmo123.connectwave.dto.UserDto;
-import com.abdulmo123.connectwave.entity.Comment;
-import com.abdulmo123.connectwave.entity.Post;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.Comment;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
+import com.abdulmo123.connectwave.model.response.HttpResponse;
 import com.abdulmo123.connectwave.repository.CommentRepository;
 import com.abdulmo123.connectwave.repository.LikeRepository;
 import com.abdulmo123.connectwave.repository.PostRepository;
@@ -37,7 +38,7 @@ public class PostServiceImpl implements PostService {
     private LikeRepository likeRepository;
 
     @Override
-    public Post createUserPost(Long userId, Post post) {
+    public HttpResponse createUserPost(Long userId, Post post) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -50,8 +51,12 @@ public class PostServiceImpl implements PostService {
             post.setPublisherName(publisherName);
 
             user.getUserPosts().add(post);
+            HttpResponse httpResponse = new HttpResponse();
+            httpResponse.setStatus(200);
+            httpResponse.setMessage("Post created successfully!");
+            httpResponse.setData(postRepository.save(post));
 
-            return postRepository.save(post);
+            return httpResponse;
         }
         else {
             throw new UserNotFoundException("User with id: " + userId + " not found!");
@@ -59,12 +64,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAllPosts() {
-        return postRepository.getAllPosts();
+    public HttpResponse getAllPosts() {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setStatus(200);
+        httpResponse.setMessage("All posts received");
+        httpResponse.setData(postRepository.getAllPosts());
+
+        return httpResponse;
     }
 
     @Override
-    public List<PostDto> getAllPostDtos() {
+    public HttpResponse getAllPostDtos() {
+        HttpResponse httpResponse = new HttpResponse();
         List<Object[]> results = postRepository.getPostsAndUsers();
         List<PostDto> allPostsInfo = new ArrayList<>();
 
@@ -106,11 +117,18 @@ public class PostServiceImpl implements PostService {
             allPostsInfo.add(postDto);
         }
 
-        return allPostsInfo;
+        httpResponse.setStatus(200);
+        httpResponse.setMessage("All posts retrieved");
+        httpResponse.setData(allPostsInfo);
+        return httpResponse;
     }
 
     @Override
-    public List<Post> getAllPostsByUser(Long userId) {
-        return postRepository.getAllPostsByUser(userId);
+    public HttpResponse getAllPostsByUser(Long userId) {
+        HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setStatus(200);
+        httpResponse.setMessage("All posts by user id: " + userId);
+        httpResponse.setData(postRepository.getAllPostsByUser(userId));
+        return httpResponse;
     }
 }

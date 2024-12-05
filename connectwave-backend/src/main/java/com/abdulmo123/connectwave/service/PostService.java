@@ -1,17 +1,18 @@
 package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.dto.PostDto;
-import com.abdulmo123.connectwave.entity.Post;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.response.HttpResponse;
 
 import java.util.List;
 
 public interface PostService {
 
-    Post createUserPost(Long userId, Post post);
+    HttpResponse createUserPost(Long userId, Post post);
 
-    List<Post> getAllPosts();
+    HttpResponse getAllPosts();
 
-    List<PostDto> getAllPostDtos();
+    HttpResponse getAllPostDtos();
 
-    List<Post> getAllPostsByUser(Long userId);
+    HttpResponse getAllPostsByUser(Long userId);
 }

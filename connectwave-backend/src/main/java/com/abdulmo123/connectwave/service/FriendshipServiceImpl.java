@@ -2,8 +2,8 @@ package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.dto.FriendshipDto;
 import com.abdulmo123.connectwave.dto.UserDto;
-import com.abdulmo123.connectwave.entity.Friendship;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.Friendship;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.enums.FriendshipStatus;
 import com.abdulmo123.connectwave.repository.FriendshipRepository;
 import com.abdulmo123.connectwave.repository.UserRepository;

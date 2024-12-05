@@ -3,8 +3,8 @@ package com.abdulmo123.connectwave.service;
 
 import com.abdulmo123.connectwave.dto.ResetPasswordRequestDto;
 import com.abdulmo123.connectwave.dto.UserDto;
-import com.abdulmo123.connectwave.entity.AppUserDetails;
-import com.abdulmo123.connectwave.entity.User;
+import com.abdulmo123.connectwave.model.entity.AppUserDetails;
+import com.abdulmo123.connectwave.model.entity.User;
 import com.abdulmo123.connectwave.exception.UserNotFoundException;
 import com.abdulmo123.connectwave.repository.UserRepository;
 import com.abdulmo123.connectwave.util.PasswordGenerator;

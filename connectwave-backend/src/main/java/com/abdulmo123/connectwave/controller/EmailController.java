@@ -1,7 +1,5 @@
 package com.abdulmo123.connectwave.controller;
 
-import com.abdulmo123.connectwave.dto.UserDto;
-import com.abdulmo123.connectwave.entity.User;
 import com.abdulmo123.connectwave.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

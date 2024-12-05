@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.Comment;
+import com.abdulmo123.connectwave.model.entity.Comment;
 import java.util.List;
 
 public interface CommentService {

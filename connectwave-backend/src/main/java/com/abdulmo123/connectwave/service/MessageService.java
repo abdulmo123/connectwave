@@ -1,6 +1,6 @@
 package com.abdulmo123.connectwave.service;
 
-import com.abdulmo123.connectwave.entity.Message;
+import com.abdulmo123.connectwave.model.entity.Message;
 
 import java.util.List;
 

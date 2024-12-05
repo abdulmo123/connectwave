@@ -1,7 +1,8 @@
 package com.abdulmo123.connectwave.controller;
 
 import com.abdulmo123.connectwave.dto.PostDto;
-import com.abdulmo123.connectwave.entity.Post;
+import com.abdulmo123.connectwave.model.entity.Post;
+import com.abdulmo123.connectwave.model.response.HttpResponse;
 import com.abdulmo123.connectwave.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,26 +19,26 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/{userId}/createUserPost")
-    public ResponseEntity<Post> createUserPost(@PathVariable("userId") Long userId, @RequestBody Post post) {
-        Post newPost = postService.createUserPost(userId, post);
+    public ResponseEntity<HttpResponse> createUserPost(@PathVariable("userId") Long userId, @RequestBody Post post) {
+        HttpResponse newPost = postService.createUserPost(userId, post);
         return new ResponseEntity<>(newPost, HttpStatus.CREATED);
     }
 
     @GetMapping("/getAllPosts")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> allPosts = postService.getAllPosts();
+    public ResponseEntity<HttpResponse> getAllPosts() {
+        HttpResponse allPosts = postService.getAllPosts();
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
     @GetMapping("/getAllPostsInfo")
-    public ResponseEntity<List<PostDto>> getAllPostDtos() {
-        List<PostDto> allPosts = postService.getAllPostDtos();
+    public ResponseEntity<HttpResponse> getAllPostDtos() {
+        HttpResponse allPosts = postService.getAllPostDtos();
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/getUserPosts")
-    public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable("userId") Long userId) {
-        List<Post> allPostsByUser = postService.getAllPostsByUser(userId);
+    public ResponseEntity<HttpResponse> getAllPostsByUser(@PathVariable("userId") Long userId) {
+        HttpResponse allPostsByUser = postService.getAllPostsByUser(userId);
         return new ResponseEntity<>(allPostsByUser, HttpStatus.OK);
     }
 }
